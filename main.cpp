@@ -42,11 +42,25 @@ static PerformanceWindow _pw;
 
 
 
+
+
+#include <mooncake.h>
+using namespace MOONCAKE;
+Mooncake _mooncake;
+
+
+
 void setup() 
 {
     _lcd.init();
     _canvas = new LGFX_Sprite(&_lcd);
     _canvas->createSprite(_lcd.width(), _lcd.height());
+
+
+
+
+
+    _mooncake.init();
 }
 
 void loop()
@@ -59,4 +73,7 @@ void loop()
 
     // lgfx::delay(5);
     _pw.update();
+
+
+    _mooncake.update();
 }

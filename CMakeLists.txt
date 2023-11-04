@@ -16,12 +16,24 @@ file(GLOB Target_Files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
     Lib/LovyanGFX/src/lgfx/v1/panel/Panel_Device.cpp
     Lib/LovyanGFX/src/lgfx/v1/panel/Panel_FrameBufferBase.cpp
     Lib/LovyanGFX/src/lgfx/v1/platforms/sdl/*.cpp
-    )
-add_executable (LGFX_SDL ${Target_Files})
+)
+
+# Rachel
+file(GLOB_RECURSE RACHELE_SRCS
+    rachel/*.c
+    rachel/*.cpp
+)
+
+add_executable (LGFX_SDL ${Target_Files} ${RACHELE_SRCS})
 
 # includeするファイルのパスを指定する;
 # LovyanGFXのあるパスと位置関係を変えた場合は相対パス記述を環境に合わせて調整すること;
 target_include_directories(LGFX_SDL PUBLIC "Lib/LovyanGFX/src/")
+
+
+# Mooncake 
+add_subdirectory("Lib/mooncake")
+
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
@@ -29,7 +41,7 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 # SDL2_INCLUDE_DIRS と SDL2_LIBRARIES を事前に設定しておく;
     find_package(SDL2 REQUIRED SDL2)
     include_directories(${SDL2_INCLUDE_DIRS})
-    target_link_libraries(LGFX_SDL -lpthread ${SDL2_LIBRARIES})
+    target_link_libraries(LGFX_SDL -lpthread ${SDL2_LIBRARIES} mooncake)
 
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
@@ -38,7 +50,7 @@ ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     target_include_directories(LGFX_SDL PUBLIC "C:/SDL2/include")
 
 # SDL2を配置したパス内の.libファイルのパスを指定する;
-    target_link_libraries(LGFX_SDL PUBLIC "C:/SDL2/lib/x64/SDL2.lib")
+    target_link_libraries(LGFX_SDL PUBLIC "C:/SDL2/lib/x64/SDL2.lib" mooncake)
 
 
     add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
