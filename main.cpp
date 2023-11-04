@@ -11,6 +11,7 @@
  */
 #include "lgfx/v1/misc/enum.hpp"
 #include "lgfx/v1/platforms/sdl/common.hpp"
+#include "rachel/rachel.h"
 #define LGFX_USE_V1
 #include <LGFX_AUTODETECT.hpp>
 #include <LovyanGFX.hpp>
@@ -38,42 +39,45 @@ int Game_random(int low, int high)
     return dist(gen);
 }
 
-static PerformanceWindow _pw;
+// static PerformanceWindow _pw;
 
-
-
-
-
-#include <mooncake.h>
-using namespace MOONCAKE;
-Mooncake _mooncake;
 
 
 
 void setup() 
 {
-    _lcd.init();
-    _canvas = new LGFX_Sprite(&_lcd);
-    _canvas->createSprite(_lcd.width(), _lcd.height());
+    
 
 
 
 
+    // _lcd.init();
+    // _canvas = new LGFX_Sprite(&_lcd);
+    // _canvas->createSprite(_lcd.width(), _lcd.height());
 
-    _mooncake.init();
+
+    // RACHEL::Main();
+
+
+    // _mooncake.init();
 }
 
 void loop()
 {
-    _canvas->fillSmoothCircle(
-        Game_random(0, _canvas->width()), Game_random(0, _canvas->height()),
-        Game_random(1, 24), Game_random(TFT_BLACK, TFT_WHITE));
-    _canvas_update();
+    // _canvas->fillSmoothCircle(
+    //     Game_random(0, _canvas->width()), Game_random(0, _canvas->height()),
+    //     Game_random(1, 24), Game_random(TFT_BLACK, TFT_WHITE));
+    // _canvas_update();
 
 
-    // lgfx::delay(5);
-    _pw.update();
+    // // lgfx::delay(5);
+    // _pw.update();
 
 
-    _mooncake.update();
+    // _mooncake.update();
+
+
+
+    RACHEL::Main();
+
 }
