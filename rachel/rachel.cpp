@@ -12,33 +12,45 @@
 #include "hal/hal.h"
 #include "spdlog/spdlog.h"
 #include <mooncake.h>
+#include "hal/hal_sim.hpp"
 
 
-using namespace MOONCAKE;
+static MOONCAKE::Mooncake* _mooncake = nullptr;
 
 
-void RACHEL::Main()
+int Game_random(int low, int high);
+
+
+void RACHEL::Setup()
 {
-    spdlog::info("Rachel-Main");
+    spdlog::info("Rachel Setup");
 
     // HAL 
-    HAL::Inject(new HAL);
+    HAL::Inject(new HAL_Simulator);
 
     // Mooncake framework 
-    auto mc = new Mooncake;
-    mc->init();
+    _mooncake = new MOONCAKE::Mooncake;
+    _mooncake->init();
+}
 
 
-    // Main loop 
-    while (1)
-    {
-        mc->update();
-    }
+void RACHEL::Loop()
+{
+    _mooncake->update();
+
+    HAL::GetCanvas()->fillSmoothCircle(
+        Game_random(0, HAL::GetCanvas()->width()), Game_random(0, HAL::GetCanvas()->height()),
+        Game_random(1, 24), Game_random(TFT_BLACK, TFT_WHITE));
+    HAL::CanvasUpdate();
+}
 
 
+void RACHEL::Destroy()
+{
     // Free 
-    delete mc;
+    delete _mooncake;
     HAL::Destroy();
 
-    spdlog::warn("Rachel-Main quit");
+    spdlog::warn("Rachel-Main destroy");
 }
+

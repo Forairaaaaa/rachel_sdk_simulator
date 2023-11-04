@@ -20,11 +20,11 @@
 
 
 
-static LGFX _lcd(240, 240);
+// static LGFX _lcd(240, 240);
 // static LGFX _lcd(480, 320);
 
-static LGFX_Sprite *_canvas;
-#define _canvas_update() _canvas->pushSprite(0, 0)
+// static LGFX_Sprite *_canvas;
+// #define _canvas_update() _canvas->pushSprite(0, 0)
 
 #define PIN_LEFT 39
 #define PIN_DOWN 38
@@ -39,45 +39,18 @@ int Game_random(int low, int high)
     return dist(gen);
 }
 
-// static PerformanceWindow _pw;
-
-
+static PerformanceWindow _pw;
 
 
 void setup() 
 {
-    
-
-
-
-
-    // _lcd.init();
-    // _canvas = new LGFX_Sprite(&_lcd);
-    // _canvas->createSprite(_lcd.width(), _lcd.height());
-
-
-    // RACHEL::Main();
-
-
-    // _mooncake.init();
+    RACHEL::Setup();
 }
 
 void loop()
 {
-    // _canvas->fillSmoothCircle(
-    //     Game_random(0, _canvas->width()), Game_random(0, _canvas->height()),
-    //     Game_random(1, 24), Game_random(TFT_BLACK, TFT_WHITE));
-    // _canvas_update();
+    RACHEL::Loop();
 
-
-    // // lgfx::delay(5);
-    // _pw.update();
-
-
-    // _mooncake.update();
-
-
-
-    RACHEL::Main();
-
+    // lgfx::delay(16);
+    _pw.update();
 }

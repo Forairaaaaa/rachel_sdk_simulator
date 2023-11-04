@@ -9,12 +9,13 @@
  * 
  */
 #pragma once
+#include <LovyanGFX.hpp>
+#include "lgfx/v1/LGFXBase.hpp"
+#include "lgfx/v1/LGFX_Sprite.hpp"
+#include "lgfx/v1_autodetect/LGFX_AutoDetect_sdl.hpp"
 #include <iostream>
 #include <string>
-#include "lgfx/v1/platforms/sdl/common.hpp"
-#define LGFX_USE_V1
-#include <LGFX_AUTODETECT.hpp>
-#include <LovyanGFX.hpp>
+
 
 /**
  * @brief Singleton like pattern to simplify hal's getter 
@@ -58,9 +59,54 @@ public:
      */
     static void Destroy();
 
+    
 
+    /**
+     * @brief Base class 
+     * 
+     */
+public:
+    HAL() :
+        _display(nullptr)
+        {}
     virtual ~HAL() {}
-    virtual void init() {}
     virtual std::string type() { return "Base"; }
+    virtual void init() {}
+    
+    /**
+     * @brief Components 
+     * 
+     */
+protected:
+    LGFX_Device* _display;
+    LGFX_Sprite* _canvas;
+
+
+    /**
+     * @brief Getters 
+     * 
+     */
+public:
+    /**
+     * @brief Display device 
+     * 
+     * @return LGFX_Device* 
+     */
+    static LGFX_Device* GetDisplay() { return Get()->_display; }
+
+    /**
+     * @brief Full screen canvas (sprite)
+     * 
+     * @return LGFX_Sprite* 
+     */
+    static LGFX_Sprite* GetCanvas() { return Get()->_canvas; }
+
+
+    /**
+     * @brief APIs
+     * 
+     */
+public:
+    static void CanvasUpdate() { GetCanvas()->pushSprite(0, 0); }
 
 };

@@ -12,5 +12,7 @@
 
 namespace RACHEL 
 {
-    void Main();
+    void Setup();
+    void Loop();
+    void Destroy();
 }
