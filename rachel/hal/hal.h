@@ -13,6 +13,7 @@
 #include "lgfx/v1/LGFXBase.hpp"
 #include "lgfx/v1/LGFX_Sprite.hpp"
 #include "lgfx/v1_autodetect/LGFX_AutoDetect_sdl.hpp"
+#include <cstdint>
 #include <iostream>
 #include <string>
 
@@ -108,5 +109,11 @@ public:
      */
 public:
     static void CanvasUpdate() { GetCanvas()->pushSprite(0, 0); }
+    
+    virtual void delay(unsigned long milliseconds) {}
+    static void Delay(unsigned long milliseconds) { Get()->delay(milliseconds); }
+
+    virtual unsigned long millis() { return 0; }
+    static unsigned long Millis() { return Get()->millis(); }
 
 };

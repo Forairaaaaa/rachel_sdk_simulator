@@ -13,9 +13,11 @@
 #include "spdlog/spdlog.h"
 #include <mooncake.h>
 #include "hal/hal_sim.hpp"
+#include "apps/apps.h"
 
 
-static MOONCAKE::Mooncake* _mooncake = nullptr;
+using namespace MOONCAKE;
+static Mooncake* _mooncake = nullptr;
 
 
 int Game_random(int low, int high);
@@ -25,23 +27,27 @@ void RACHEL::Setup()
 {
     spdlog::info("Rachel Setup");
 
-    // HAL 
+    // HAL injection 
     HAL::Inject(new HAL_Simulator);
 
     // Mooncake framework 
-    _mooncake = new MOONCAKE::Mooncake;
+    _mooncake = new Mooncake;
     _mooncake->init();
+
+    // Install launcher 
+    auto launcher = new APPS::Launcher_Packer;
+
+    // Install apps 
+    _mooncake->installApp(new APPS::AppTemplate_Packer);
+
+    // Create launcher 
+    _mooncake->createApp(launcher);
 }
 
 
 void RACHEL::Loop()
 {
     _mooncake->update();
-
-    HAL::GetCanvas()->fillSmoothCircle(
-        Game_random(0, HAL::GetCanvas()->width()), Game_random(0, HAL::GetCanvas()->height()),
-        Game_random(1, 24), Game_random(TFT_BLACK, TFT_WHITE));
-    HAL::CanvasUpdate();
 }
 
 
@@ -51,6 +57,6 @@ void RACHEL::Destroy()
     delete _mooncake;
     HAL::Destroy();
 
-    spdlog::warn("Rachel-Main destroy");
+    spdlog::warn("Rachel destroy");
 }
 

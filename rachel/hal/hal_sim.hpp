@@ -30,4 +30,14 @@ class HAL_Simulator : public HAL
         _canvas = new LGFX_Sprite(_display);
         _canvas->createSprite(_display->width(), _display->height());
     }
+
+    void delay(unsigned long milliseconds) override
+    {
+        lgfx::delay(milliseconds);
+    }
+
+    unsigned long millis() override
+    {
+        return lgfx::millis();
+    }
 };

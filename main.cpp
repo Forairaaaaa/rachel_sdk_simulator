@@ -9,6 +9,7 @@
  * @copyright Copyright (c) 2023
  *
  */
+#include "lgfx/v1/lgfx_fonts.hpp"
 #include "lgfx/v1/misc/enum.hpp"
 #include "lgfx/v1/platforms/sdl/common.hpp"
 #include "rachel/rachel.h"
@@ -39,12 +40,16 @@ int Game_random(int low, int high)
     return dist(gen);
 }
 
-static PerformanceWindow _pw;
+// static PerformanceWindow _pw;
 
 
 void setup() 
 {
     RACHEL::Setup();
+
+
+
+
 }
 
 void loop()
@@ -52,5 +57,5 @@ void loop()
     RACHEL::Loop();
 
     // lgfx::delay(16);
-    _pw.update();
+    // _pw.update();
 }
