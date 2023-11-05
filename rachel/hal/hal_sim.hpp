@@ -16,12 +16,16 @@
 #include <LovyanGFX.hpp>
 #include "lgfx/v1/lgfx_fonts.hpp"
 #include "hal.h"
+#include "../../performance_window.hpp"
 
+
+// PerformanceWindow _pw;
 
 
 class HAL_Simulator : public HAL
 {
     std::string type() override { return "Simulator"; }
+
 
     void init() override
     {
@@ -34,15 +38,25 @@ class HAL_Simulator : public HAL
         _canvas->createSprite(_display->width(), _display->height());
     }
 
+
+    void canvasUpdate() override
+    {
+        GetCanvas()->pushSprite(0, 0);
+        // _pw.update();
+    }
+
+
     void delay(unsigned long milliseconds) override
     {
         lgfx::delay(milliseconds);
     }
 
+
     unsigned long millis() override
     {
         return lgfx::millis();
     }
+
 
     void loadSystemFont24() override
     {
@@ -51,4 +65,19 @@ class HAL_Simulator : public HAL
         // https://r12a.github.io/app-conversion/
         _canvas->loadFont("../rachel/apps/assets/fonts/zpix_cn_24.vlw");
     }
+
+    bool getButton(GAMEPAD::GamePadButton_t button) override
+    {
+        if (button == GAMEPAD::BTN_A)
+            return !lgfx::gpio_in(36);
+        else if (button == GAMEPAD::BTN_LEFT)
+            return !lgfx::gpio_in(39);
+        else if (button == GAMEPAD::BTN_RIGHT)
+            return !lgfx::gpio_in(37);
+        else if (button == GAMEPAD::BTN_B)
+            return !lgfx::gpio_in(38);
+
+        return false;
+    }
+
 };

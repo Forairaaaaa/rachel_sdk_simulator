@@ -19,6 +19,29 @@
 
 
 /**
+ * @brief Game pad button enum 
+ * 
+ */
+namespace GAMEPAD 
+{
+    enum GamePadButton_t
+    {
+        BTN_START = 0,
+        BTN_SELECT,
+        BTN_UP,
+        BTN_LEFT,
+        BTN_RIGHT,
+        BTN_DOWN,
+        BTN_X,
+        BTN_Y,
+        BTN_A,
+        BTN_B,
+        BTN_LEFT_STICK,
+    };
+}
+
+
+/**
  * @brief Singleton like pattern to simplify hal's getter 
  * 1) Inherit and override methods to create a specific hal 
  * 2) Use HAL::Inject() to inject your hal
@@ -108,16 +131,33 @@ public:
      * 
      */
 public:
-    static void CanvasUpdate() { GetCanvas()->pushSprite(0, 0); }
+    /**
+     * @brief Push framebuffer 
+     * 
+     */
+    static void CanvasUpdate() { Get()->canvasUpdate(); }
+    virtual void canvasUpdate() { GetCanvas()->pushSprite(0, 0); }
     
-    virtual void delay(unsigned long milliseconds) {}
+
     static void Delay(unsigned long milliseconds) { Get()->delay(milliseconds); }
+    virtual void delay(unsigned long milliseconds) {}
+    
 
-    virtual unsigned long millis() { return 0; }
     static unsigned long Millis() { return Get()->millis(); }
+    virtual unsigned long millis() { return 0; }
+    
 
-    virtual void loadSystemFont24() {}
     static void LoadSystemFont24() { Get()->loadSystemFont24(); }
-
-
+    virtual void loadSystemFont24() {}
+    
+    
+    /**
+     * @brief Get the Button state 
+     * 
+     * @param button 
+     * @return true Pressing 
+     * @return false Released 
+     */
+    static bool GetButton(GAMEPAD::GamePadButton_t button) { return Get()->getButton(button); }
+    virtual bool getButton(GAMEPAD::GamePadButton_t button) { return false; }
 };

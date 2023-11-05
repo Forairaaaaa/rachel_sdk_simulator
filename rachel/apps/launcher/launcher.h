@@ -38,19 +38,25 @@ namespace MOONCAKE
                 SMOOTH_MENU::SimpleMenuCallback_t* menu_render_cb = nullptr;
                 uint32_t menu_update_count = 0;
                 const uint32_t menu_update_interval = 10;
+                // const uint32_t menu_update_interval = 0;
+                bool menu_wait_button_released = false;
 
+                // App open and close anim 
+                LVGL::Anim_Path app_anim;
             };
             Data_t _data;
             void _update_clock(bool updateNow = false);
             void _create_menu();
             void _update_menu();
             void _destroy_menu();
+            void _play_app_anim(bool open);
 
         public:
             void onCreate() override;
             void onResume() override;
             void onRunning() override;
             void onRunningBG() override;
+            void onPause() override;
             void onDestroy() override;
         };
 

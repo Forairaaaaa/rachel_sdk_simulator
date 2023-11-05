@@ -31,6 +31,7 @@ namespace MOONCAKE
 
         public:
             void onCreate() override;
+            void onResume() override;
             void onRunning() override;
             void onDestroy() override;
         };

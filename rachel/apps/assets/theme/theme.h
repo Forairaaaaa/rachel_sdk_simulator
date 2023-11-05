@@ -20,7 +20,7 @@
 #define THEME_APP_ICON_WIDTH_HALF       31
 #define THEME_APP_ICON_HEIGHT_HALF      31
 #define THEME_APP_ICON_GAP              16
-#define THEME_APP_ICON_MARGIN_TOP       50
+#define THEME_APP_ICON_MARGIN_TOP       47
 
 #define THEME_APP_NAME_MARGIN_TOP       173
 
