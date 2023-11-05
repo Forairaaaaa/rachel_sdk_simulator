@@ -73,14 +73,14 @@ void Launcher::onCreate()
 
 
     HAL::GetCanvas()->setTextSize(1);
-    // HAL::GetCanvas()->drawCenterString("SETTINGS", 120, 174);
+    HAL::GetCanvas()->drawCenterString("SETTINGS", 120, 174);
 
 
     
     // HAL::GetCanvas()->drawCenterString("_ _,_ _!", 120, 174);
 
     // HAL::GetCanvas()->drawCenterString("原坤", 120, 174);
-    HAL::GetCanvas()->drawCenterString("设置", 120, 174);
+    // HAL::GetCanvas()->drawCenterString("设置", 120, 174);
     // HAL::GetCanvas()->drawCenterString("起飞", 120, 174);
 
 

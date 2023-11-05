@@ -46,6 +46,9 @@ class HAL_Simulator : public HAL
 
     void loadSystemFont24() override
     {
+        // https://github.com/Bodmer/TFT_eSPI/tree/master/Tools/Create_Smooth_Font/Create_font
+        // http://lvgl.100ask.net/8.1/tools/fonts-zh-source.html#id7
+        // https://r12a.github.io/app-conversion/
         _canvas->loadFont("../rachel/apps/assets/fonts/zpix_cn_24.vlw");
     }
 };
