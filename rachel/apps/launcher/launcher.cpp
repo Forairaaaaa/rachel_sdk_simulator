@@ -21,6 +21,7 @@
 using namespace MOONCAKE::APPS;
 
 
+
 void Launcher::onCreate()
 {
     spdlog::info("{} onCreate", getAppName());
@@ -45,15 +46,41 @@ void Launcher::onCreate()
 
     HAL::GetCanvas()->setTextColor(THEME_COLOR_DARK, THEME_COLOR_LIGHT);
 
-    HAL::GetCanvas()->setFont(&fonts::efontCN_24);
+
+
+    // HAL::GetCanvas()->setFont(&fonts::efontCN_24);
+    // HAL::GetCanvas()->loadFont("../rachel/apps/assets/fonts/zpix_cn_24.vlw");
+
+
+
+    HAL::LoadSystemFont24();
+    
+
+
 
 
     // HAL::GetCanvas()->drawCenterString("Genshing Import", 120, 174);
-    HAL::GetCanvas()->drawCenterString("SETTINGS", 120, 174);
+    // HAL::GetCanvas()->drawCenterString("SETTINGS", 120, 174);
+
+    // HAL::GetCanvas()->setTextSize(2);
+    // HAL::GetCanvas()->drawCenterString("SETTINGS", 120, 174);
+
+
+    HAL::GetCanvas()->fillRect(0, 0, 240, 24, THEME_COLOR_LIGHT);
+    HAL::GetCanvas()->setTextSize(2);
+    HAL::GetCanvas()->drawCenterString("22:33", 120, 3, &fonts::Font0);
+
+
+
+    HAL::GetCanvas()->setTextSize(1);
+    // HAL::GetCanvas()->drawCenterString("SETTINGS", 120, 174);
+
+
+    
     // HAL::GetCanvas()->drawCenterString("_ _,_ _!", 120, 174);
 
     // HAL::GetCanvas()->drawCenterString("原坤", 120, 174);
-    // HAL::GetCanvas()->drawCenterString("设置", 120, 174);
+    HAL::GetCanvas()->drawCenterString("设置", 120, 174);
     // HAL::GetCanvas()->drawCenterString("起飞", 120, 174);
 
 
@@ -66,11 +93,15 @@ void Launcher::onCreate()
 
 
     
-    HAL::GetCanvas()->fillRect(0, 0, 240, 24, THEME_COLOR_LIGHT);
+    // HAL::GetCanvas()->fillRect(0, 0, 240, 24, THEME_COLOR_LIGHT);
 
 
-    HAL::GetCanvas()->setFont(&fonts::efontCN_16_b);
-    HAL::GetCanvas()->drawCenterString("22:33", 120, 3);
+    // HAL::GetCanvas()->setFont(&fonts::efontCN_16_b);
+    // HAL::GetCanvas()->drawCenterString("22:33", 120, 3);
+
+
+
+
 
 
     HAL::CanvasUpdate();

@@ -13,7 +13,10 @@
 #include "lgfx/v1/platforms/sdl/common.hpp"
 #define LGFX_USE_V1
 #include <LGFX_AUTODETECT.hpp>
+#include <LovyanGFX.hpp>
+#include "lgfx/v1/lgfx_fonts.hpp"
 #include "hal.h"
+
 
 
 class HAL_Simulator : public HAL
@@ -39,5 +42,10 @@ class HAL_Simulator : public HAL
     unsigned long millis() override
     {
         return lgfx::millis();
+    }
+
+    void loadSystemFont24() override
+    {
+        _canvas->loadFont("../rachel/apps/assets/fonts/zpix_cn_24.vlw");
     }
 };

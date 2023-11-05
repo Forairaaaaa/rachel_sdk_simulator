@@ -116,4 +116,8 @@ public:
     virtual unsigned long millis() { return 0; }
     static unsigned long Millis() { return Get()->millis(); }
 
+    virtual void loadSystemFont24() {}
+    static void LoadSystemFont24() { Get()->loadSystemFont24(); }
+
+
 };
