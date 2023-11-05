@@ -36,8 +36,15 @@ void RACHEL::Setup()
 
     // Install launcher 
     auto launcher = new APPS::Launcher_Packer;
+    _mooncake->installApp(launcher);
 
     // Install apps 
+    _mooncake->installApp(new APPS::AppTemplate_Packer);
+    _mooncake->installApp(new APPS::AppTemplate_Packer);
+    _mooncake->installApp(new APPS::AppTemplate_Packer);
+    _mooncake->installApp(new APPS::AppTemplate_Packer);
+    _mooncake->installApp(new APPS::AppTemplate_Packer);
+    _mooncake->installApp(new APPS::AppTemplate_Packer);
     _mooncake->installApp(new APPS::AppTemplate_Packer);
 
     // Create launcher 

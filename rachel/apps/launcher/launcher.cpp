@@ -21,13 +21,6 @@
 using namespace MOONCAKE::APPS;
 
 
-
-void Launcher::_update_clock()
-{
-    
-}
-
-
 void Launcher::onCreate()
 {
     spdlog::info("{} onCreate", getAppName());
@@ -45,6 +38,9 @@ void Launcher::onResume()
 {
     // Load resources 
     HAL::LoadSystemFont24();
+    HAL::GetCanvas()->setTextSize(1);
+
+    _update_clock(true);
 }
 
 
@@ -61,9 +57,6 @@ void Launcher::onRunningBG()
     if (mcAppGetFramework()->getAppManager().getCreatedAppNum() == 1)
     {
         spdlog::info("back to launcher");
-
-        // Close anim 
-        // TODO 
         
         // Back to business
         mcAppGetFramework()->startApp(this);
@@ -78,3 +71,15 @@ void Launcher::onDestroy()
     _destroy_menu();
 }
 
+
+void Launcher::_update_clock(bool updateNow)
+{
+    if ((HAL::Millis() - _data.clock_update_count) > _data.clock_update_interval || updateNow)
+    {
+        // Update clock  
+        // TODO
+        _data.clock = "22:33";
+
+        _data.clock_update_count = HAL::Millis();
+    }
+}
