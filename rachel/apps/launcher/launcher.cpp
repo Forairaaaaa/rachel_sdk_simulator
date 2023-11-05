@@ -22,6 +22,12 @@ using namespace MOONCAKE::APPS;
 
 
 
+void Launcher::_update_clock()
+{
+    
+}
+
+
 void Launcher::onCreate()
 {
     spdlog::info("{} onCreate", getAppName());
@@ -31,97 +37,44 @@ void Launcher::onCreate()
     // Auto start 
     startApp();
 
+    _create_menu();
+}
 
 
-
-
-
-
-    HAL::GetCanvas()->fillScreen(THEME_COLOR_DARK);
-
-
-    HAL::GetCanvas()->pushImage(0, 158, 240, 82, image_data_launcher_bottom_panel);
-
-
-
-    HAL::GetCanvas()->setTextColor(THEME_COLOR_DARK, THEME_COLOR_LIGHT);
-
-
-
-    // HAL::GetCanvas()->setFont(&fonts::efontCN_24);
-    // HAL::GetCanvas()->loadFont("../rachel/apps/assets/fonts/zpix_cn_24.vlw");
-
-
-
+void Launcher::onResume()
+{
+    // Load resources 
     HAL::LoadSystemFont24();
-    
-
-
-
-
-    // HAL::GetCanvas()->drawCenterString("Genshing Import", 120, 174);
-    // HAL::GetCanvas()->drawCenterString("SETTINGS", 120, 174);
-
-    // HAL::GetCanvas()->setTextSize(2);
-    // HAL::GetCanvas()->drawCenterString("SETTINGS", 120, 174);
-
-
-    HAL::GetCanvas()->fillRect(0, 0, 240, 24, THEME_COLOR_LIGHT);
-    HAL::GetCanvas()->setTextSize(2);
-    HAL::GetCanvas()->drawCenterString("22:33", 120, 3, &fonts::Font0);
-
-
-
-    HAL::GetCanvas()->setTextSize(1);
-    HAL::GetCanvas()->drawCenterString("SETTINGS", 120, 174);
-
-
-    
-    // HAL::GetCanvas()->drawCenterString("_ _,_ _!", 120, 174);
-
-    // HAL::GetCanvas()->drawCenterString("原坤", 120, 174);
-    // HAL::GetCanvas()->drawCenterString("设置", 120, 174);
-    // HAL::GetCanvas()->drawCenterString("起飞", 120, 174);
-
-
-
-    HAL::GetCanvas()->pushImage(89, 46, 62, 62, image_data_icon_app_default);
-
-    HAL::GetCanvas()->pushImage(14, 76, 62, 62, image_data_icon_app_default);
-
-    HAL::GetCanvas()->pushImage(164, 76, 62, 62, image_data_icon_app_default);
-
-
-    
-    // HAL::GetCanvas()->fillRect(0, 0, 240, 24, THEME_COLOR_LIGHT);
-
-
-    // HAL::GetCanvas()->setFont(&fonts::efontCN_16_b);
-    // HAL::GetCanvas()->drawCenterString("22:33", 120, 3);
-
-
-
-
-
-
-    HAL::CanvasUpdate();
 }
 
 
 void Launcher::onRunning()
 {
-
+    _update_clock();
+    _update_menu();
 }
 
 
 void Launcher::onRunningBG()
 {
+    // If only launcher running still 
+    if (mcAppGetFramework()->getAppManager().getCreatedAppNum() == 1)
+    {
+        spdlog::info("back to launcher");
 
+        // Close anim 
+        // TODO 
+        
+        // Back to business
+        mcAppGetFramework()->startApp(this);
+    }
 }
 
 
 void Launcher::onDestroy()
 {
     spdlog::info("{} onDestroy", getAppName());
+
+    _destroy_menu();
 }
 

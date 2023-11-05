@@ -10,6 +10,7 @@
  */
 #pragma once
 #include <mooncake.h>
+#include <string>
 
 
 namespace MOONCAKE
@@ -25,12 +26,17 @@ namespace MOONCAKE
         private:
             struct Data_t
             {
-                
+                std::string clock;
             };
             Data_t _data;
+            void _update_clock();
+            void _create_menu();
+            void _update_menu();
+            void _destroy_menu();
 
         public:
             void onCreate() override;
+            void onResume() override;
             void onRunning() override;
             void onRunningBG() override;
             void onDestroy() override;
