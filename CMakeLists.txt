@@ -20,11 +20,17 @@ file(GLOB Target_Files RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} CONFIGURE_DEPENDS
 
 # Rachel
 file(GLOB_RECURSE RACHELE_SRCS
-    rachel/*.c
-    rachel/*.cpp
+    rachel/apps/*.c
+    rachel/apps/*.cpp
+    rachel/hal/hal_simulator/*.c
+    rachel/hal/hal_simulator/*.cpp
+)
+set(RACHELE_SRCS_EXTRA
+    rachel/rachel.cpp
+    rachel/hal/hal.cpp
 )
 
-add_executable (LGFX_SDL ${Target_Files} ${RACHELE_SRCS})
+add_executable (LGFX_SDL ${Target_Files} ${RACHELE_SRCS} ${RACHELE_SRCS_EXTRA})
 
 # includeするファイルのパスを指定する;
 # LovyanGFXのあるパスと位置関係を変えた場合は相対パス記述を環境に合わせて調整すること;

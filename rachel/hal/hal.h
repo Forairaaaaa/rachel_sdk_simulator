@@ -9,6 +9,9 @@
  * 
  */
 #pragma once
+#ifndef ESP_PLATFORM
+#define LGFX_USE_V1
+#include <LGFX_AUTODETECT.hpp>
 #include <LovyanGFX.hpp>
 #include "lgfx/v1/LGFXBase.hpp"
 #include "lgfx/v1/LGFX_Sprite.hpp"
@@ -16,6 +19,9 @@
 #include <cstdint>
 #include <iostream>
 #include <string>
+#else
+#include <LovyanGFX.hpp>
+#endif
 
 
 /**
@@ -37,6 +43,21 @@ namespace GAMEPAD
         BTN_A,
         BTN_B,
         BTN_LEFT_STICK,
+    };
+}
+
+
+/**
+ * @brief IMU data 
+ * 
+ */
+namespace IMU
+{
+    struct ImuData_t
+    {
+        float accelX;
+        float accelY;
+        float accelZ;
     };
 }
 
@@ -91,7 +112,9 @@ public:
      */
 public:
     HAL() :
-        _display(nullptr)
+        _display(nullptr),
+        _canvas(nullptr),
+        _is_sd_card_ready(false)
         {}
     virtual ~HAL() {}
     virtual std::string type() { return "Base"; }
@@ -104,6 +127,9 @@ public:
 protected:
     LGFX_Device* _display;
     LGFX_Sprite* _canvas;
+    tm _date_time;
+    IMU::ImuData_t _imu_data;
+    bool _is_sd_card_ready;
 
 
     /**
@@ -125,39 +151,71 @@ public:
      */
     static LGFX_Sprite* GetCanvas() { return Get()->_canvas; }
 
-
-    /**
-     * @brief APIs
-     * 
-     */
 public:
     /**
-     * @brief Push framebuffer 
+     * @brief System APIs
      * 
      */
+    static void Delay(unsigned long milliseconds) { Get()->delay(milliseconds); }
+    virtual void delay(unsigned long milliseconds) { lgfx::delay(milliseconds); }
+    
+    static unsigned long Millis() { return Get()->millis(); }
+    virtual unsigned long millis() { return lgfx::millis(); }
+
+    static void PowerOff() { Get()->powerOff(); }
+    virtual void powerOff() {}
+
+    static void SetSystemTime(tm dateTime) { return Get()->setSystemTime(dateTime); }
+    virtual void setSystemTime(tm dateTime) {}
+
+    static void UpdateImuData() { Get()->updateImuData(); }
+    virtual void updateImuData() {}
+
+    static IMU::ImuData_t& GetImuData() { return Get()->getImuData(); }
+    IMU::ImuData_t& getImuData() { return _imu_data; }
+
+    static void Beep(float frequency, uint32_t duration = 4294967295U) { Get()->beep(frequency, duration); }
+    virtual void beep(float frequency, uint32_t duration) {}
+
+    static void BeepStop() { Get()->beepStop(); }
+    virtual void beepStop() {}
+
+    static void SetBeepVolume(uint8_t volume) { Get()->setBeepVolume(volume); }
+    virtual void setBeepVolume(uint8_t volume) {}
+
+    static bool CheckSdCard() { return Get()->checkSdCard(); }
+    virtual bool checkSdCard() { return _is_sd_card_ready; }
+
+
+    /**
+     * @brief Display APIs 
+     * 
+     */
+    // Push frame buffer 
     static void CanvasUpdate() { Get()->canvasUpdate(); }
     virtual void canvasUpdate() { GetCanvas()->pushSprite(0, 0); }
+
+    static void RenderFpsPanel() { Get()->renderFpsPanel(); }
+    virtual void renderFpsPanel();
+
+    // Pop error message and wait reboot 
+    static void PopFatalError(std::string& msg) { Get()->popFatalError(msg); }
+    virtual void popFatalError(std::string& msg) {}
     
 
-    static void Delay(unsigned long milliseconds) { Get()->delay(milliseconds); }
-    virtual void delay(unsigned long milliseconds) {}
-    
-
-    static unsigned long Millis() { return Get()->millis(); }
-    virtual unsigned long millis() { return 0; }
-    
-
+    /**
+     * @brief File system APIs 
+     * 
+     */
     static void LoadSystemFont24() { Get()->loadSystemFont24(); }
     virtual void loadSystemFont24() {}
-    
-    
+
+
     /**
-     * @brief Get the Button state 
+     * @brief Gamepad APIs 
      * 
-     * @param button 
-     * @return true Pressing 
-     * @return false Released 
      */
+    // Get button state, @true: Pressing @false: Released 
     static bool GetButton(GAMEPAD::GamePadButton_t button) { return Get()->getButton(button); }
     virtual bool getButton(GAMEPAD::GamePadButton_t button) { return false; }
 };

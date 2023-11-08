@@ -20,10 +20,6 @@ using namespace MOONCAKE::APPS;
 void AppTemplate::onCreate()
 {
     spdlog::info("{} onCreate", getAppName());
-
-    // HAL::GetCanvas()->fillScreen(THEME_COLOR_DARK);
-    // HAL::GetCanvas()->setTextScroll(true);
-    // HAL::GetCanvas()->setCursor(0, 0);
 }
 
 
@@ -33,13 +29,12 @@ void AppTemplate::onResume()
 
     HAL::GetCanvas()->setTextScroll(true);
     HAL::GetCanvas()->setCursor(0, 0);
-    HAL::GetCanvas()->setTextSize(0.5);
 }
 
 
 void AppTemplate::onRunning()
 {
-    // Make some noise every seconds 
+    // Every seconds 
     if ((HAL::Millis() - _data.count) > 1000)
     {
         spdlog::info("{}: Hi", getAppName());
@@ -50,8 +45,8 @@ void AppTemplate::onRunning()
         _data.count = HAL::Millis();
     }
 
-    // Press B back to launcher 
-    if (HAL::GetButton(GAMEPAD::BTN_B))
+    // Press Select to quit  
+    if (HAL::GetButton(GAMEPAD::BTN_SELECT))
         destroyApp();
 }
 

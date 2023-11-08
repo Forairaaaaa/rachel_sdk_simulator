@@ -9,10 +9,13 @@
  * 
  */
 #include "rachel.h"
-#include "hal/hal.h"
-#include "spdlog/spdlog.h"
 #include <mooncake.h>
-#include "hal/hal_sim.hpp"
+#include "hal/hal.h"
+#ifndef ESP_PLATFORM
+#include "hal/hal_simulator/hal_simulator.hpp"
+#else
+#include "hal/hal_rachel/hal_rachel.h"
+#endif
 #include "apps/apps.h"
 
 
@@ -20,15 +23,16 @@ using namespace MOONCAKE;
 static Mooncake* _mooncake = nullptr;
 
 
-int Game_random(int low, int high);
-
-
 void RACHEL::Setup()
 {
     spdlog::info("Rachel Setup");
 
     // HAL injection 
+    #ifndef ESP_PLATFORM
     HAL::Inject(new HAL_Simulator);
+    #else
+    HAL::Inject(new HAL_Rachel);
+    #endif
 
     // Mooncake framework 
     _mooncake = new Mooncake;
@@ -63,7 +67,6 @@ void RACHEL::Destroy()
     // Free 
     delete _mooncake;
     HAL::Destroy();
-
     spdlog::warn("Rachel destroy");
 }
 

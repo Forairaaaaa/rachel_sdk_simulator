@@ -46,10 +46,6 @@ int Game_random(int low, int high)
 void setup() 
 {
     RACHEL::Setup();
-
-
-
-
 }
 
 void loop()
