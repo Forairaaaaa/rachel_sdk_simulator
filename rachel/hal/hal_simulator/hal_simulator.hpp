@@ -41,7 +41,8 @@ class HAL_Simulator : public HAL
         // // Some pc window pop up slower? 
         // lgfx::delay(1500);
 
-        this->popFatalError("啊?");
+        // this->popFatalError("啊?");
+        // this->popFatalError("原神启动失败(悲)");
     }
 
 
@@ -58,6 +59,13 @@ class HAL_Simulator : public HAL
         // http://lvgl.100ask.net/8.1/tools/fonts-zh-source.html#id7
         // https://r12a.github.io/app-conversion/
         _canvas->loadFont("../rachel/apps/assets/fonts/zpix_cn_24.vlw");
+        _canvas->setTextSize(1);
+    }
+
+
+    void loadTextFont16() override
+    {
+        _canvas->setFont(&fonts::efontCN_16);
         _canvas->setTextSize(1);
     }
 

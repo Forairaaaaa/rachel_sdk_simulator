@@ -127,7 +127,7 @@ public:
 protected:
     LGFX_Device* _display;
     LGFX_Sprite* _canvas;
-    tm _date_time;
+    time_t _time_buffer;
     IMU::ImuData_t _imu_data;
     bool _is_sd_card_ready;
 
@@ -171,6 +171,9 @@ public:
     static void SetSystemTime(tm dateTime) { return Get()->setSystemTime(dateTime); }
     virtual void setSystemTime(tm dateTime) {}
 
+    static tm* GetLocalTime() { return Get()->getLocalTime(); }
+    virtual tm* getLocalTime();
+
     static void UpdateImuData() { Get()->updateImuData(); }
     virtual void updateImuData() {}
 
@@ -212,6 +215,9 @@ public:
      */
     static void LoadTextFont24() { Get()->loadTextFont24(); }
     virtual void loadTextFont24() {}
+
+    static void LoadTextFont16() { Get()->loadTextFont16(); }
+    virtual void loadTextFont16() {}
 
     static void LoadLauncherFont24() { Get()->loadLauncherFont24(); }
     virtual void loadLauncherFont24() {}

@@ -107,3 +107,10 @@ void HAL::popFatalError(std::string msg)
     }
 }
 
+
+// Cpp sucks 
+tm* HAL::getLocalTime()
+{
+    time(&_time_buffer);
+    return localtime(&_time_buffer);
+}
