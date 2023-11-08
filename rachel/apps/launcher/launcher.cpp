@@ -39,8 +39,7 @@ void Launcher::onResume()
     spdlog::info("{} onResume", getAppName());
 
     // Load resources 
-    HAL::LoadSystemFont24();
-    HAL::GetCanvas()->setTextSize(1);
+    HAL::LoadLauncherFont24();
     HAL::GetCanvas()->setTextScroll(false);
 
     _update_clock(true);

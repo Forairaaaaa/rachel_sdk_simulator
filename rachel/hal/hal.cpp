@@ -73,3 +73,35 @@ void HAL::renderFpsPanel()
 
     time_count = millis();
 }
+
+
+static const uint32_t _blue_screen_bg_color = 0x003c94;
+
+void HAL::popFatalError(std::string msg)
+{
+    loadTextFont24();
+    _canvas->setTextColor(TFT_WHITE, _blue_screen_bg_color);
+    _canvas->fillScreen(_blue_screen_bg_color);
+    
+    _canvas->setCursor(8, 15);
+    _canvas->setTextSize(5);
+    _canvas->printf(":(");
+
+    _canvas->setCursor(0, 155);
+    _canvas->setTextSize(1);
+    _canvas->printf("   Fatal Error\n   %s", msg.c_str());
+
+    _canvas->pushSprite(0, 0);
+
+
+    // Wait reboot or power off 
+    while (1)
+    {
+        delay(100);
+        if (getButton(GAMEPAD::BTN_A))
+            reboot();
+        if (getButton(GAMEPAD::BTN_B))
+            powerOff();
+    }
+}
+

@@ -40,6 +40,8 @@ class HAL_Simulator : public HAL
 
         // // Some pc window pop up slower? 
         // lgfx::delay(1500);
+
+        this->popFatalError("啊?");
     }
 
 
@@ -50,13 +52,23 @@ class HAL_Simulator : public HAL
     }
 
 
-    void loadSystemFont24() override
+    void loadTextFont24() override
     {
         // https://github.com/Bodmer/TFT_eSPI/tree/master/Tools/Create_Smooth_Font/Create_font
         // http://lvgl.100ask.net/8.1/tools/fonts-zh-source.html#id7
         // https://r12a.github.io/app-conversion/
         _canvas->loadFont("../rachel/apps/assets/fonts/zpix_cn_24.vlw");
+        _canvas->setTextSize(1);
     }
+
+
+    void loadLauncherFont24() override
+    {
+        // loadTextFont24();
+        _canvas->setFont(&fonts::efontCN_24);
+        _canvas->setTextSize(1);
+    }
+
 
     bool getButton(GAMEPAD::GamePadButton_t button) override
     {
@@ -67,6 +79,8 @@ class HAL_Simulator : public HAL
         else if (button == GAMEPAD::BTN_RIGHT)
             return !lgfx::gpio_in(37);
         else if (button == GAMEPAD::BTN_B)
+            return !lgfx::gpio_in(38);
+        else if (button == GAMEPAD::BTN_SELECT)
             return !lgfx::gpio_in(38);
 
         return false;
