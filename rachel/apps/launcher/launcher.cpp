@@ -64,6 +64,8 @@ void Launcher::onRunningBG()
         mcAppGetFramework()->startApp(this);
 
         // Play app close anim 
+        HAL::LoadLauncherFont24();
+        _update_clock(true);
         _play_app_anim(false);
     }
 }
