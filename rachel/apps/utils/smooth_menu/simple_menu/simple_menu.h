@@ -33,6 +33,7 @@ namespace SMOOTH_MENU
         Camrea_t* _camera;
         SimpleMenuCallback_t* _render_callback;
         bool _first_open;
+        int _first_item;
         
     public:
         Simple_Menu(int cameraWidth = 100, int cameraHeight = 100);
@@ -50,6 +51,9 @@ namespace SMOOTH_MENU
          * @param loopMode 
          */
         void setMenuLoopMode(bool loopMode);
+
+        
+        inline void setFirstItem(int item) { _first_item = item; }
 
 
         /**

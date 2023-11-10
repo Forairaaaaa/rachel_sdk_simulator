@@ -29,6 +29,7 @@ namespace SMOOTH_MENU
 
         _render_callback = nullptr;
         _first_open = true;
+        _first_item = 0;
     }
 
 
@@ -57,7 +58,11 @@ namespace SMOOTH_MENU
         if (_first_open) 
         {
             _first_open = false;
-            _selector->goToItem(1);
+
+            // Set first item 
+            _selector->goToItem(_first_item);
+            _camera->goToItem(_first_item);
+
             _selector->update(0);
         }
 

@@ -27,9 +27,9 @@ void Launcher::_create_menu()
     _data.menu = new SMOOTH_MENU::Simple_Menu(HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
     _data.menu_render_cb = new LauncherRenderCallBack;
 
-    // Init and set render callback 
+    // Setup 
     _data.menu->setRenderCallback(_data.menu_render_cb);
-
+    _data.menu->setFirstItem(1);
 
 
     // Set selector anim, in this launcher case, is the icon's moving anim (fixed selector)
