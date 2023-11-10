@@ -39,7 +39,7 @@ class HAL_Simulator : public HAL
         _canvas->createSprite(_display->width(), _display->height());
 
         // // Some pc window pop up slower? 
-        // lgfx::delay(1500);
+        lgfx::delay(1500);
 
         // this->popFatalError("啊?");
         // this->popFatalError("原神启动失败(悲)");

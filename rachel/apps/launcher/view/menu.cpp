@@ -24,11 +24,10 @@ void Launcher::_create_menu()
 
 
     // Create menu and render callback 
-    _data.menu = new SMOOTH_MENU::Simple_Menu;
+    _data.menu = new SMOOTH_MENU::Simple_Menu(HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
     _data.menu_render_cb = new LauncherRenderCallBack;
 
     // Init and set render callback 
-    _data.menu->init(HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
     _data.menu->setRenderCallback(_data.menu_render_cb);
 
 
