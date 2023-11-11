@@ -68,7 +68,7 @@ void AppTemplate::onRunning()
     auto select_menu = SelectMenu();
 
     std::vector<std::string> test = {
-        "[Menu Type]",
+        "[MENU TYPE]",
         "Left",
         "Center",
         "Right",
@@ -77,11 +77,14 @@ void AppTemplate::onRunning()
     };
 
     std::vector<std::string> settings = {
-        "[Settings]",
+        "[SETTINGS]",
         "asdasdasd",
         "9879ht",
         "5465gmiokn",
         "1221d3ffff",
+        "-=-=--=-dd",
+        "00000000",
+        ":)",
         "-=-=--=-dd",
         "00000000",
         ":)",
@@ -105,7 +108,7 @@ void AppTemplate::onRunning()
             while (1)
             {
                 result = select_menu.waitResult(settings, alignment);
-                if (result == 8)
+                if (result == settings.size() - 1)
                     break;
             }
         }
