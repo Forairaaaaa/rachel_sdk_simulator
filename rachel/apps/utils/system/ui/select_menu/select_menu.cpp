@@ -113,7 +113,7 @@ int SelectMenu::waitResult(std::vector<std::string>& itemList)
             }
 
             // If select 
-            else if (HAL::GetButton(GAMEPAD::BTN_A) || HAL::GetButton(GAMEPAD::BTN_LEFT_STICK))
+            else if (HAL::GetButton(GAMEPAD::BTN_A))
             {
                 _data.menu->getSelector()->pressed();
                 // Wait release 
