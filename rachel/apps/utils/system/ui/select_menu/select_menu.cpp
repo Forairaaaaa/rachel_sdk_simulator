@@ -16,13 +16,10 @@
 using namespace SYSTEM::UI;
 
 
-SelectMenu::SelectMenu(std::vector<std::string>& itemList)
+void SelectMenu::_create_menu(std::vector<std::string>& itemList)
 {
     // Create menu 
-    _data.menu = new SMOOTH_MENU::Simple_Menu(HAL::GetCanvas()->width(), HAL::GetCanvas()->height());
-
-    // Load font 
-    HAL::LoadLauncherFont24();
+    _data.menu = new SMOOTH_MENU::Simple_Menu(HAL::GetCanvas()->width(), HAL::GetCanvas()->height());    
 
     // Push items into menu 
     int text_width = 12;
@@ -38,24 +35,53 @@ SelectMenu::SelectMenu(std::vector<std::string>& itemList)
         );
     }
 
-    // Configs 
-    _data.menu->setFirstItem(_config.first_item);
-
     // Set render callback 
     _data.render_cb = new SelectMenuRenderCb_AlignLeft;
     _data.menu->setRenderCallback(_data.render_cb);
 }
 
 
-SelectMenu::~SelectMenu()
+void SelectMenu::_destroy_menu()
 {
     delete _data.menu;
     delete _data.render_cb;
 }
 
 
-int SelectMenu::waitResult()
+void SelectMenu::_load_config()
 {
+    // Load font 
+    HAL::LoadLauncherFont24();
+
+    // Configs 
+    _data.menu->setFirstItem(_config.first_item);
+    _data.menu->setMenuLoopMode(_config.selector_can_go_loop);
+    {
+        auto cfg = _data.menu->getMenu()->config();
+        cfg.animPath_open = _config.menu_open_anim_path;
+        cfg.animTime_open = _config.menu_open_anim_time;
+        _data.menu->getMenu()->config(cfg);
+    }
+    {
+        auto cfg = _data.menu->getSelector()->config();
+        cfg.animPath_y = _config.selector_anim_path;
+        cfg.animTime_y = _config.selector_anim_time;
+        _data.menu->getSelector()->config(cfg);
+    }
+    {
+        auto cfg = _data.menu->getCamera()->config();
+        cfg.animPath_y = _config.camera_anim_path;
+        cfg.animTime_y = _config.camera_anim_time;
+        _data.menu->getCamera()->config(cfg);
+    }
+}
+
+
+int SelectMenu::waitResult(std::vector<std::string>& itemList)
+{
+    _create_menu(itemList);
+    _load_config();
+
     while (1)
     {
         if ((HAL::Millis() - _data.menu_update_count) > _config.menu_update_interval)
@@ -99,7 +125,10 @@ int SelectMenu::waitResult()
 
                 // If not title 
                 if (_data.menu->getSelector()->getTargetItem() != 0)
-                    return _data.menu->getSelector()->getTargetItem() + 1;
+                {
+                    _destroy_menu();
+                    return _data.menu->getSelector()->getTargetItem();
+                }
             }
 
             // Unlock if no button is pressing 

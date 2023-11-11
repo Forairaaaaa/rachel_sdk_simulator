@@ -24,6 +24,16 @@ namespace SYSTEM::UI
         {
             int first_item = 1;
             uint32_t menu_update_interval = 10;
+
+            LVGL::LV_ANIM_PATH_t menu_open_anim_path = LVGL::ease_out;
+            int32_t menu_open_anim_time = 400;
+
+            LVGL::LV_ANIM_PATH_t selector_anim_path = LVGL::ease_out;
+            int32_t selector_anim_time = 100;
+            bool selector_can_go_loop = true;
+
+            LVGL::LV_ANIM_PATH_t camera_anim_path = LVGL::ease_out;
+            int32_t camera_anim_time = 400;
         };
         
     private:
@@ -36,20 +46,22 @@ namespace SYSTEM::UI
         };
         Data_t _data;
         Config_t _config;
-        
+        void _load_config();
+        void _create_menu(std::vector<std::string>& itemList);
+        void _destroy_menu();
+        int _wait_result();
 
     public:
-        SelectMenu(std::vector<std::string>& itemList);
-        ~SelectMenu();
-
         inline Config_t getConfig() { return _config; }
         inline void setConfig(Config_t cfg) { _config = cfg; }
+        
 
         /**
          * @brief Render the menu and blocked untill item selected 
          * 
-         * @return int Selected item index 
+         * @param itemList Items to be select, the first element will be "title", which will not be selected 
+         * @return int selected item index 
          */
-        int waitResult();
+        int waitResult(std::vector<std::string>& itemList);
     };
 }

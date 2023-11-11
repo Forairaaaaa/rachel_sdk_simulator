@@ -57,28 +57,61 @@ void AppTemplate::onRunning()
     //     destroyApp();
 
 
-    std::vector<std::string> test = {
-        "Select Shit:",
-        "asdad",
-        "sa????",
-        "465476756",
-        "asd asid afhi",
-        "???s333***",
-        "77713jdfobih fsd"
-        "sdsdjiji s",
-        "yyrt rtg",
-        "asdad",
-        "sa????",
-        "465476756",
-        "asd asid afhi",
-        "???s333***",
-        "77713jdfobih fsd"
-        "sdsdjiji s",
-        "yyrt rtg"
-    };
-    auto sm = SYSTEM::UI::SelectMenu(test);
-    auto index = sm.waitResult();
-    spdlog::info("select: {}", test[index]);
+    
+
+    auto sm = SYSTEM::UI::SelectMenu();
+
+    {
+        std::vector<std::string> test = {
+            "Select Shit:",
+            "asdad",
+            "sa????",
+            "687687"
+        };
+        auto index = sm.waitResult(test);
+        spdlog::info("select: {}", test[index]);
+    }
+
+    {
+        std::vector<std::string> test = {
+            "Select Shit:",
+            "asdad",
+            "sa????",
+            "687687"
+        };
+        auto index = sm.waitResult(test);
+        spdlog::info("select: {}", test[index]);
+    }
+
+    {
+        std::vector<std::string> test = {
+            "Select Shit:",
+            "asdad",
+            "sa????",
+            "asdasdasd",
+            "657568ff",
+            "HUIHIUH",
+            "(*)(*)(*)"
+        };
+        auto index = sm.waitResult(test);
+        spdlog::info("select: {}", test[index]);
+    }
+
+    {
+        std::vector<std::string> test = {
+            "Select Shit:",
+            "asdad",
+            "sa????",
+            "&*(&(*&))",
+            "FFFFFFF"
+        };
+        auto index = sm.waitResult(test);
+        spdlog::info("select: {}", test[index]);
+    }
+
+
+
+
     destroyApp();
 }
 
