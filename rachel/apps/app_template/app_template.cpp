@@ -79,7 +79,7 @@ void AppTemplate::onRunning()
             "sa????",
             "687687"
         };
-        auto index = sm.waitResult(test);
+        auto index = sm.waitResult(test, SYSTEM::UI::SelectMenu::ALIGN_CENTER);
         spdlog::info("select: {}", test[index]);
     }
 
@@ -105,7 +105,7 @@ void AppTemplate::onRunning()
             "&*(&(*&))",
             "FFFFFFF"
         };
-        auto index = sm.waitResult(test);
+        auto index = sm.waitResult(test, SYSTEM::UI::SelectMenu::ALIGN_CENTER);
         spdlog::info("select: {}", test[index]);
     }
 

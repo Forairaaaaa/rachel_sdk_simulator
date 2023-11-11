@@ -24,6 +24,13 @@ namespace SYSTEM::UI
         ) override;
     };
 
-
-
+    class SelectMenuRenderCb_AlignCenter : public SMOOTH_MENU::SimpleMenuCallback_t
+    {
+    public:
+        void renderCallback(
+            const std::vector<SMOOTH_MENU::Item_t*>& menuItemList,
+            const SMOOTH_MENU::RenderAttribute_t& selector,
+            const SMOOTH_MENU::RenderAttribute_t& camera
+        ) override;
+    };
 }

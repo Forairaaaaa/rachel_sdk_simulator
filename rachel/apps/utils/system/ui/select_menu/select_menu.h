@@ -20,6 +20,13 @@ namespace SYSTEM::UI
     class SelectMenu
     {
     public:
+        enum ItemsAlignment_t
+        {
+            ALIGN_LEFT = 0,
+            ALIGN_CENTER,
+            ALIGN_RIGHT,
+        };
+
         struct Config_t
         {
             int first_item = 1;
@@ -34,6 +41,8 @@ namespace SYSTEM::UI
 
             LVGL::LV_ANIM_PATH_t camera_anim_path = LVGL::ease_out;
             int32_t camera_anim_time = 400;
+
+            ItemsAlignment_t items_alignment = ALIGN_LEFT;
         };
         
     private:
@@ -49,11 +58,11 @@ namespace SYSTEM::UI
         void _load_config();
         void _create_menu(std::vector<std::string>& itemList);
         void _destroy_menu();
-        int _wait_result();
 
     public:
         inline Config_t getConfig() { return _config; }
         inline void setConfig(Config_t cfg) { _config = cfg; }
+        inline void setItemAlignment(ItemsAlignment_t alignment) { _config.items_alignment = alignment; }
         
 
         /**
@@ -63,5 +72,6 @@ namespace SYSTEM::UI
          * @return int selected item index 
          */
         int waitResult(std::vector<std::string>& itemList);
+        inline int waitResult(std::vector<std::string>& itemList, ItemsAlignment_t alignment) { setItemAlignment(alignment); return waitResult(itemList); }
     };
 }

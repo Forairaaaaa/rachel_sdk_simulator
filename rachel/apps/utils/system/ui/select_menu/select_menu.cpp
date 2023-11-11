@@ -36,7 +36,13 @@ void SelectMenu::_create_menu(std::vector<std::string>& itemList)
     }
 
     // Set render callback 
-    _data.render_cb = new SelectMenuRenderCb_AlignLeft;
+    if (_config.items_alignment == ALIGN_LEFT)
+        _data.render_cb = new SelectMenuRenderCb_AlignLeft;
+    else if (_config.items_alignment == ALIGN_CENTER)
+        _data.render_cb = new SelectMenuRenderCb_AlignCenter;
+    else if (_config.items_alignment == ALIGN_RIGHT)
+        _data.render_cb = new SelectMenuRenderCb_AlignCenter;
+
     _data.menu->setRenderCallback(_data.render_cb);
 }
 
