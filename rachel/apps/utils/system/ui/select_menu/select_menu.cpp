@@ -42,6 +42,8 @@ void SelectMenu::_create_menu(std::vector<std::string>& itemList)
         _data.render_cb = new SelectMenuRenderCb_AlignCenter;
     else if (_config.items_alignment == ALIGN_RIGHT)
         _data.render_cb = new SelectMenuRenderCb_AlignCenter;
+    else
+        _data.render_cb = new SelectMenuRenderCb_AlignLeft;
 
     _data.menu->setRenderCallback(_data.render_cb);
 }
@@ -111,7 +113,7 @@ int SelectMenu::waitResult(std::vector<std::string>& itemList)
             }
 
             // If select 
-            else if (HAL::GetButton(GAMEPAD::BTN_A))
+            else if (HAL::GetButton(GAMEPAD::BTN_A) || HAL::GetButton(GAMEPAD::BTN_LEFT_STICK))
             {
                 _data.menu->getSelector()->pressed();
                 // Wait release 

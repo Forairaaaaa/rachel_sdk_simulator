@@ -118,7 +118,7 @@ void Launcher::_update_menu()
 
 
         // Open app 
-        else if (HAL::GetButton(GAMEPAD::BTN_A))
+        else if (HAL::GetButton(GAMEPAD::BTN_A) || HAL::GetButton(GAMEPAD::BTN_LEFT_STICK))
         {
             auto selected_item = _data.menu->getSelector()->getTargetItem();
             // spdlog::info("select: {} try create", selected_item);

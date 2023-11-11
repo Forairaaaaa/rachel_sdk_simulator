@@ -44,6 +44,6 @@ void SelectMenuRenderCb_AlignCenter::renderCallback(
         selector.width,
         selector.height,
         6,
-        THEME_COLOR_LIGHT
+        TFT_WHITE
     );
 }
