@@ -59,7 +59,8 @@ namespace SMOOTH_MENU
         {
             _first_open = false;
 
-            // Set first item 
+            // Set first item
+            _selector->reset(currentTime);
             _selector->goToItem(_first_item);
             _camera->goToItem(_first_item);
 
