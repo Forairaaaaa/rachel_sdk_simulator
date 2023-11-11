@@ -39,12 +39,12 @@ void SelectMenuRenderCb_AlignLeft::renderCallback(
     }
 
     // Render selector 
+    HAL::GetCanvas()->setColor(TFT_WHITE);
     HAL::GetCanvas()->fillSmoothRoundRectInDifference(
         selector.x,
         selector.y - camera.y + (menuItemList[selector.targetItem]->height - selector.height) / 2,
         selector.width,
         selector.height,
-        6,
-        TFT_WHITE
+        6
     );
 }

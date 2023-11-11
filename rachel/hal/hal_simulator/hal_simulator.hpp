@@ -35,7 +35,7 @@ class HAL_Simulator : public HAL
         _display->init();
 
         // Canvas
-        _canvas = new LGFX_Sprite(_display);
+        _canvas = new LGFX_SpriteFx(_display);
         _canvas->createSprite(_display->width(), _display->height());
 
         // // Some pc window pop up slower? 

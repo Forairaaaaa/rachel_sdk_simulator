@@ -28,6 +28,7 @@ file(GLOB_RECURSE RACHELE_SRCS
 set(RACHELE_SRCS_EXTRA
     rachel/rachel.cpp
     rachel/hal/hal.cpp
+    rachel/hal/lgfx_fx/lgfx_fx.cpp
 )
 
 add_executable (LGFX_SDL ${Target_Files} ${RACHELE_SRCS} ${RACHELE_SRCS_EXTRA})
