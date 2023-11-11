@@ -36,6 +36,9 @@ void AppTemplate::onResume()
 }
 
 
+using namespace SYSTEM::UI;
+
+
 void AppTemplate::onRunning()
 {
     // // Every seconds 
@@ -59,57 +62,32 @@ void AppTemplate::onRunning()
 
     
 
-    auto sm = SYSTEM::UI::SelectMenu();
 
+
+
+    auto select_menu = SelectMenu();
+
+    std::vector<std::string> test = {
+        "[Menu Type]",
+        "Left",
+        "Center",
+        "Right",
+        "Quit"
+    };
+
+    auto alignment = SelectMenu::ALIGN_LEFT;
+    while (1)
     {
-        std::vector<std::string> test = {
-            "Select Shit:",
-            "asdad",
-            "sa????",
-            "687687"
-        };
-        auto index = sm.waitResult(test);
-        spdlog::info("select: {}", test[index]);
+        auto result = select_menu.waitResult(test, alignment);
+        if (result == 1)
+            alignment = SelectMenu::ALIGN_LEFT;
+        else if (result == 2)
+            alignment = SelectMenu::ALIGN_CENTER;
+        else if (result == 3)
+            alignment = SelectMenu::ALIGN_RIGHT;
+        else
+            break;
     }
-
-    {
-        std::vector<std::string> test = {
-            "Select Shit:",
-            "asdad",
-            "sa????",
-            "687687"
-        };
-        auto index = sm.waitResult(test, SYSTEM::UI::SelectMenu::ALIGN_CENTER);
-        spdlog::info("select: {}", test[index]);
-    }
-
-    {
-        std::vector<std::string> test = {
-            "Select Shit:",
-            "asdad",
-            "sa????",
-            "asdasdasd",
-            "657568ff",
-            "HUIHIUH",
-            "(*)(*)(*)"
-        };
-        auto index = sm.waitResult(test);
-        spdlog::info("select: {}", test[index]);
-    }
-
-    {
-        std::vector<std::string> test = {
-            "Select Shit:",
-            "asdad",
-            "sa????",
-            "&*(&(*&))",
-            "FFFFFFF"
-        };
-        auto index = sm.waitResult(test, SYSTEM::UI::SelectMenu::ALIGN_CENTER);
-        spdlog::info("select: {}", test[index]);
-    }
-
-
 
 
     destroyApp();

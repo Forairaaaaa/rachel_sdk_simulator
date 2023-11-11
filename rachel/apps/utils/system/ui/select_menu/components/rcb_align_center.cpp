@@ -28,9 +28,10 @@ void SelectMenuRenderCb_AlignCenter::renderCallback(
     // Render items 
     HAL::GetCanvas()->setTextColor(THEME_COLOR_LIGHT, THEME_COLOR_DARK);
     HAL::GetCanvas()->setTextSize(1);
+    HAL::GetCanvas()->setTextDatum(textdatum_t::top_center);
     for (int i = 0; i < menuItemList.size(); i++)
     {
-        HAL::GetCanvas()->drawCenterString(
+        HAL::GetCanvas()->drawString(
             menuItemList[i]->tag.c_str(), 
             camera.width / 2, 
             menuItemList[i]->y - camera.y

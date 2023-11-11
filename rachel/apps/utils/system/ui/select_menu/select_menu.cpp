@@ -41,7 +41,7 @@ void SelectMenu::_create_menu(std::vector<std::string>& itemList)
     else if (_config.items_alignment == ALIGN_CENTER)
         _data.render_cb = new SelectMenuRenderCb_AlignCenter;
     else if (_config.items_alignment == ALIGN_RIGHT)
-        _data.render_cb = new SelectMenuRenderCb_AlignCenter;
+        _data.render_cb = new SelectMenuRenderCb_AlignRight;
     else
         _data.render_cb = new SelectMenuRenderCb_AlignLeft;
 
@@ -134,8 +134,9 @@ int SelectMenu::waitResult(std::vector<std::string>& itemList)
                 // If not title 
                 if (_data.menu->getSelector()->getTargetItem() != 0)
                 {
+                    int selected_index = _data.menu->getSelector()->getTargetItem();
                     _destroy_menu();
-                    return _data.menu->getSelector()->getTargetItem();
+                    return selected_index;
                 }
             }
 
