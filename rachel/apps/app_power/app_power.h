@@ -20,13 +20,6 @@ namespace MOONCAKE::APPS
     */
     class AppPower : public APP_BASE
     {
-    private:
-        struct Data_t
-        {
-            unsigned long count = 0;
-        };
-        Data_t _data;
-
     public:
         void onCreate() override;
         void onResume() override;
