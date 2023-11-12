@@ -10,6 +10,8 @@ def getAppName():
 
 
 def checkAppName():
+    if app_name == "":
+        return False
     if not app_name.isalpha():
         return False
     if app_name == "template":

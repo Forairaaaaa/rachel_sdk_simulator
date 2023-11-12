@@ -1,5 +1,5 @@
 /**
- * @file app_blegamepad.cpp
+ * @file app_genshin.cpp
  * @author Forairaaaaa
  * @brief 
  * @version 0.1
@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2023
  * 
  */
-#include "app_blegamepad.h"
+#include "app_genshin.h"
 #include "spdlog/spdlog.h"
 #include "../../hal/hal.h"
 #include "../assets/theme/theme.h"
@@ -18,13 +18,13 @@
 using namespace MOONCAKE::APPS;
 
 
-void AppBlegamepad::onCreate()
+void AppGenshin::onCreate()
 {
     spdlog::info("{} onCreate", getAppName());
 }
 
 
-void AppBlegamepad::onResume()
+void AppGenshin::onResume()
 {
     spdlog::info("{} onResume", getAppName());
 
@@ -39,7 +39,7 @@ void AppBlegamepad::onResume()
 using namespace SYSTEM::UI;
 
 
-void AppBlegamepad::onRunning()
+void AppGenshin::onRunning()
 {
     // // Every seconds 
     // if ((HAL::Millis() - _data.count) > 1000)
@@ -122,7 +122,7 @@ void AppBlegamepad::onRunning()
 }
 
 
-void AppBlegamepad::onDestroy()
+void AppGenshin::onDestroy()
 {
     spdlog::info("{} onDestroy", getAppName());
 }

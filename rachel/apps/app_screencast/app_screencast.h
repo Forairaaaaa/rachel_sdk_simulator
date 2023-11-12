@@ -1,5 +1,5 @@
 /**
- * @file app_blegamepad.h
+ * @file app_screencast.h
  * @author Forairaaaaa
  * @brief 
  * @version 0.1
@@ -9,16 +9,16 @@
  * 
  */
 #include <mooncake.h>
-#include "../assets/icons/icons.h"
+#include "assets/icon_app_screen_cast.h"
 
 
 namespace MOONCAKE::APPS
 {
     /**
-    * @brief Blegamepad 
+    * @brief Screencast 
     *
     */
-    class AppBlegamepad : public APP_BASE
+    class AppScreencast : public APP_BASE
     {
     private:
         struct Data_t
@@ -34,11 +34,11 @@ namespace MOONCAKE::APPS
         void onDestroy() override;
     };
 
-    class AppBlegamepad_Packer : public APP_PACKER_BASE
+    class AppScreencast_Packer : public APP_PACKER_BASE
     {
-        std::string getAppName() override { return "Blegamepad"; }
-        void * getAppIcon() override { return (void*)image_data_icon_app_default; }
-        void *newApp() override { return new AppBlegamepad; }
-        void deleteApp(void *app) override { delete (AppBlegamepad*)app; }
+        std::string getAppName() override { return "投屏"; }
+        void * getAppIcon() override { return (void*)image_data_icon_app_screen_cast; }
+        void *newApp() override { return new AppScreencast; }
+        void deleteApp(void *app) override { delete (AppScreencast*)app; }
     };
 }

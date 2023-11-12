@@ -9,7 +9,7 @@
  * 
  */
 #include <mooncake.h>
-#include "../assets/icons/icons.h"
+#include "assets/icon_app_settings.h"
 
 
 namespace MOONCAKE::APPS
@@ -36,8 +36,8 @@ namespace MOONCAKE::APPS
 
     class AppSettings_Packer : public APP_PACKER_BASE
     {
-        std::string getAppName() override { return "Settings"; }
-        void * getAppIcon() override { return (void*)image_data_icon_app_default; }
+        std::string getAppName() override { return "设置"; }
+        void * getAppIcon() override { return (void*)image_data_icon_app_settings; }
         void *newApp() override { return new AppSettings; }
         void deleteApp(void *app) override { delete (AppSettings*)app; }
     };

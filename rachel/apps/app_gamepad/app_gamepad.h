@@ -1,5 +1,5 @@
 /**
- * @file app_emulator.h
+ * @file app_gamepad.h
  * @author Forairaaaaa
  * @brief 
  * @version 0.1
@@ -9,16 +9,16 @@
  * 
  */
 #include <mooncake.h>
-#include "assets/icon_app_emulator.h"
+#include "assets/icon_app_ble_gamepad.h"
 
 
 namespace MOONCAKE::APPS
 {
     /**
-    * @brief Emulator 
+    * @brief Gamepad 
     *
     */
-    class AppEmulator : public APP_BASE
+    class AppGamepad : public APP_BASE
     {
     private:
         struct Data_t
@@ -34,11 +34,11 @@ namespace MOONCAKE::APPS
         void onDestroy() override;
     };
 
-    class AppEmulator_Packer : public APP_PACKER_BASE
+    class AppGamepad_Packer : public APP_PACKER_BASE
     {
-        std::string getAppName() override { return "模拟器"; }
-        void * getAppIcon() override { return (void*)image_data_icon_app_emulator; }
-        void *newApp() override { return new AppEmulator; }
-        void deleteApp(void *app) override { delete (AppEmulator*)app; }
+        std::string getAppName() override { return "手柄"; }
+        void * getAppIcon() override { return (void*)image_data_icon_app_ble_gamepad; }
+        void *newApp() override { return new AppGamepad; }
+        void deleteApp(void *app) override { delete (AppGamepad*)app; }
     };
 }
