@@ -1,5 +1,5 @@
 /**
- * @file app_template.h
+ * @file app_settings.h
  * @author Forairaaaaa
  * @brief 
  * @version 0.1
@@ -15,10 +15,10 @@
 namespace MOONCAKE::APPS
 {
     /**
-    * @brief Template 
+    * @brief Settings 
     *
     */
-    class AppTemplate : public APP_BASE
+    class AppSettings : public APP_BASE
     {
     private:
         struct Data_t
@@ -34,11 +34,11 @@ namespace MOONCAKE::APPS
         void onDestroy() override;
     };
 
-    class AppTemplate_Packer : public APP_PACKER_BASE
+    class AppSettings_Packer : public APP_PACKER_BASE
     {
-        std::string getAppName() override { return "Template"; }
+        std::string getAppName() override { return "Settings"; }
         void * getAppIcon() override { return (void*)image_data_icon_app_default; }
-        void *newApp() override { return new AppTemplate; }
-        void deleteApp(void *app) override { delete (AppTemplate*)app; }
+        void *newApp() override { return new AppSettings; }
+        void deleteApp(void *app) override { delete (AppSettings*)app; }
     };
 }
