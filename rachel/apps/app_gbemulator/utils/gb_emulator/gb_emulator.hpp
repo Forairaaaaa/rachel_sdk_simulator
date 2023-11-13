@@ -23,7 +23,7 @@ void gb_emulator_start()
 {
     rom_init(gb_rom);
     sdl_init();
-    mem_init();
+    gb_mem_init();
     cpu_init();
 }
 

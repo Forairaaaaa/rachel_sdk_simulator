@@ -198,7 +198,7 @@ void mem_write_word(unsigned short d, unsigned short i)
 	mem[d+1] = i>>8;
 }
 
-void mem_init(void)
+void gb_mem_init(void)
 {
 	const unsigned char *bytes = rom_getbytes();
 

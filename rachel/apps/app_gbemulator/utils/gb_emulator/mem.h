@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 #include "rom.h"
-void mem_init(void);
+void gb_mem_init(void);
 unsigned char mem_get_byte(unsigned short);
 unsigned short mem_get_word(unsigned short);
 void mem_write_byte(unsigned short, unsigned char);
