@@ -62,6 +62,16 @@ void DrawCircleV(Vector2 center, float r, uint32_t color)
 }
 
 
+#include <random>
+std::random_device rd;
+std::mt19937 gen(rd());
+int GetRandomValue(int min, int max)
+{
+    std::uniform_int_distribution<> dist(min, max);
+    return dist(gen);
+}
+
+
 
 
 // Check collision between circle and rectangle

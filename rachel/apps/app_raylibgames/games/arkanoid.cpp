@@ -49,6 +49,7 @@ namespace ARKANOID
     #define BRICK_INIT_Y_OFFSET     BRICK_HEIGHT * 2
     #define PLAYER_WIDTH            BALL_RADIUS * 6
     #define PLAYER_HEIGHT           BALL_RADIUS
+    #define PLAYER_SPEED            5
 
     //----------------------------------------------------------------------------------
     // Types and Structures Definition
@@ -93,6 +94,7 @@ namespace ARKANOID
     static void DrawGame(void);         // Draw game (one frame)
     static void UnloadGame(void);       // Unload game
     static void UpdateDrawFrame(void);  // Update and Draw (one frame)
+    static void CollisionCallback(void);
 
     //------------------------------------------------------------------------------------
     // Program main entry point
@@ -192,13 +194,13 @@ namespace ARKANOID
                 // Player movement logic
                 // if (IsKeyDown(KEY_LEFT)) player.position.x -= 5;
                 if (HAL::GetButton(GAMEPAD::BTN_LEFT))
-                    player.position.x -= 5;
+                    player.position.x -= PLAYER_SPEED;
 
                 if ((player.position.x - player.size.x/2) <= 0) player.position.x = player.size.x/2;
 
                 // if (IsKeyDown(KEY_RIGHT)) player.position.x += 5;
                 if (HAL::GetButton(GAMEPAD::BTN_RIGHT))
-                    player.position.x += 5;
+                    player.position.x += PLAYER_SPEED;
 
                 if ((player.position.x + player.size.x/2) >= screenWidth) player.position.x = screenWidth - player.size.x/2;
 
@@ -229,14 +231,23 @@ namespace ARKANOID
                 }
 
                 // Collision logic: ball vs walls
-                if (((ball.position.x + ball.radius) >= screenWidth) || ((ball.position.x - ball.radius) <= 0)) ball.speed.x *= -1;
-                if ((ball.position.y - ball.radius) <= 0) ball.speed.y *= -1;
+                if (((ball.position.x + ball.radius) >= screenWidth) || ((ball.position.x - ball.radius) <= 0))
+                {
+                    ball.speed.x *= -1;
+                    CollisionCallback();
+                } 
+                if ((ball.position.y - ball.radius) <= 0) 
+                {
+                    ball.speed.y *= -1;
+                    CollisionCallback();
+                }
                 if ((ball.position.y + ball.radius) >= screenHeight)
                 {
                     ball.speed = (Vector2){ 0, 0 };
                     ball.active = false;
 
                     player.life--;
+                    CollisionCallback();
                 }
 
                 // Collision logic: ball vs player
@@ -248,6 +259,8 @@ namespace ARKANOID
                         ball.speed.y *= -1;
                         ball.speed.x = (ball.position.x - player.position.x)/(player.size.x/2)*5;
                     }
+
+                    CollisionCallback();
                 }
 
                 // Collision logic: ball vs bricks
@@ -384,4 +397,9 @@ namespace ARKANOID
         DrawGame();
     }
 
+
+    void CollisionCallback(void)
+    {
+        HAL::Beep(GetRandomValue(3000, 6000), 20);
+    }
 }

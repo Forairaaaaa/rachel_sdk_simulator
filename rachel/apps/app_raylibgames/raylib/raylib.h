@@ -72,4 +72,4 @@ void EndDrawing();
 void ClearBackground(uint32_t color);
 void DrawRectangle(int x, int y, int w, int h, uint32_t color);
 void DrawCircleV(Vector2 center, float r, uint32_t color);
-
+int GetRandomValue(int min, int max);
