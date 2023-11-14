@@ -1,5 +1,5 @@
 /**
- * @file app_gamepad.cpp
+ * @file app_nes_emulator.cpp
  * @author Forairaaaaa
  * @brief 
  * @version 0.1
@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2023
  * 
  */
-#include "app_gamepad.h"
+#include "app_nes_emulator.h"
 #include "spdlog/spdlog.h"
 #include "../../hal/hal.h"
 #include "../assets/theme/theme.h"
@@ -18,13 +18,13 @@
 using namespace MOONCAKE::APPS;
 
 
-void AppGamepad::onCreate()
+void AppNes_emulator::onCreate()
 {
     spdlog::info("{} onCreate", getAppName());
 }
 
 
-void AppGamepad::onResume()
+void AppNes_emulator::onResume()
 {
     spdlog::info("{} onResume", getAppName());
 
@@ -39,7 +39,7 @@ void AppGamepad::onResume()
 using namespace SYSTEM::UI;
 
 
-void AppGamepad::onRunning()
+void AppNes_emulator::onRunning()
 {
     // // Every seconds 
     // if ((HAL::Millis() - _data.count) > 1000)
@@ -122,7 +122,7 @@ void AppGamepad::onRunning()
 }
 
 
-void AppGamepad::onDestroy()
+void AppNes_emulator::onDestroy()
 {
     spdlog::info("{} onDestroy", getAppName());
 }
