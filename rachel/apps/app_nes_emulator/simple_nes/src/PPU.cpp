@@ -1,14 +1,22 @@
 #include "../include/PPU.h"
 #include "../include/Log.h"
+#include "../../../../hal/hal.h"
 
 namespace sn
 {
-    PPU::PPU(PictureBus& bus, VirtualScreen& screen) :
+    // PPU::PPU(PictureBus& bus, VirtualScreen& screen) :
+    //     m_bus(bus),
+    //     m_screen(screen),
+    //     m_spriteMemory(64 * 4),
+    //     // m_pictureBuffer(ScanlineVisibleDots, std::vector<sf::Color>(VisibleScanlines, sf::Color::Magenta))
+    //     m_pictureBuffer(ScanlineVisibleDots, std::vector<std::uint32_t>(VisibleScanlines, 0x000000))
+    // {}
+    PPU::PPU(PictureBus& bus) :
         m_bus(bus),
-        m_screen(screen),
-        m_spriteMemory(64 * 4),
+        // m_screen(screen),
+        m_spriteMemory(64 * 4)
         // m_pictureBuffer(ScanlineVisibleDots, std::vector<sf::Color>(VisibleScanlines, sf::Color::Magenta))
-        m_pictureBuffer(ScanlineVisibleDots, std::vector<std::uint32_t>(VisibleScanlines, 0x000000))
+        // m_pictureBuffer(ScanlineVisibleDots, std::vector<std::uint32_t>(VisibleScanlines, 0x000000))
     {}
 
     void PPU::reset()
@@ -186,7 +194,8 @@ namespace sn
                     //else bgColor
 
                     // m_pictureBuffer[x][y] = sf::Color(colors[m_bus.readPalette(paletteAddr)]);
-                    m_pictureBuffer[x][y] = colors[m_bus.readPalette(paletteAddr)];
+                    // m_pictureBuffer[x][y] = colors[m_bus.readPalette(paletteAddr)];
+                    HAL::GetCanvas()->drawPixel(x, y, colors[m_bus.readPalette(paletteAddr)]);
                 }
                 else if (m_cycle == ScanlineVisibleDots + 1 && m_showBackground)
                 {
@@ -270,13 +279,14 @@ namespace sn
                     m_cycle = 0;
                     m_pipelineState = VerticalBlank;
 
-                    for (std::size_t x = 0; x < m_pictureBuffer.size(); ++x)
-                    {
-                        for (std::size_t y = 0; y < m_pictureBuffer[0].size(); ++y)
-                        {
-                            m_screen.setPixel(x, y, m_pictureBuffer[x][y]);
-                        }
-                    }
+                    // for (std::size_t x = 0; x < m_pictureBuffer.size(); ++x)
+                    // {
+                    //     for (std::size_t y = 0; y < m_pictureBuffer[0].size(); ++y)
+                    //     {
+                    //         // m_screen.setPixel(x, y, m_pictureBuffer[x][y]);
+                    //         HAL::GetCanvas()->drawPixel(x, y, m_pictureBuffer[x][y]);
+                    //     }
+                    // }
 
                 }
 

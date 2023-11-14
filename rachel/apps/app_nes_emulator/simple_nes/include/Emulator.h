@@ -41,7 +41,7 @@ namespace sn
         Controller m_controller1, m_controller2;
 
         // sf::RenderWindow m_window;
-        VirtualScreen m_emulatorScreen;
+        // VirtualScreen m_emulatorScreen;
         float m_screenScale;
 
         TimePoint m_cycleTimer;

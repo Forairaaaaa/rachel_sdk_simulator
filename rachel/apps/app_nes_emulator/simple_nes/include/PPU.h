@@ -20,7 +20,8 @@ namespace sn
     class PPU
     {
         public:
-            PPU(PictureBus &bus, VirtualScreen &screen);
+            // PPU(PictureBus &bus, VirtualScreen &screen);
+            PPU(PictureBus &bus);
             void step();
             void reset();
 
@@ -46,7 +47,7 @@ namespace sn
             void writeOAM(Byte addr, Byte value);
             Byte read(Address addr);
             PictureBus &m_bus;
-            VirtualScreen &m_screen;
+            // VirtualScreen &m_screen;
 
             std::function<void(void)> m_vblankCallback;
 
@@ -98,7 +99,7 @@ namespace sn
             Address m_dataAddrIncrement;
 
             // std::vector<std::vector<sf::Color>> m_pictureBuffer;
-            std::vector<std::vector<std::uint32_t>> m_pictureBuffer;
+            // std::vector<std::vector<std::uint32_t>> m_pictureBuffer;
     };
 }
 
