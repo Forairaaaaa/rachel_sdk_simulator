@@ -10,6 +10,7 @@
  */
 #include <mooncake.h>
 #include "../assets/icons/icons.h"
+#include "simple_nes/include/Emulator.h"
 
 
 namespace MOONCAKE::APPS
@@ -23,7 +24,7 @@ namespace MOONCAKE::APPS
     private:
         struct Data_t
         {
-            unsigned long count = 0;
+            sn::Emulator* emulator = nullptr;
         };
         Data_t _data;
 

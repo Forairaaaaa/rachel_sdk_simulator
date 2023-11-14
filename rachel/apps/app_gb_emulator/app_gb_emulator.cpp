@@ -12,7 +12,7 @@
 #include "spdlog/spdlog.h"
 #include "../../hal/hal.h"
 #include "../assets/theme/theme.h"
-#include "utils/gb_emulator/gb_emulator.hpp"
+#include "gb_emulator/gb_emulator.hpp"
 
 
 using namespace MOONCAKE::APPS;
