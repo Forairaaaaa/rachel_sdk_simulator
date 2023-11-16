@@ -30,12 +30,21 @@ set(RACHELE_SRCS_EXTRA
     rachel/hal/hal.cpp
     rachel/hal/lgfx_fx/lgfx_fx.cpp
 )
+# Nofrendo
+set(NOFRENDO_INCS
+    rachel/apps/app_nofrendo/nofrendo
+    rachel/apps/app_nofrendo/nofrendo/cpu
+    rachel/apps/app_nofrendo/nofrendo/libsnss
+    rachel/apps/app_nofrendo/nofrendo/mappers
+    rachel/apps/app_nofrendo/nofrendo/nes
+    rachel/apps/app_nofrendo/nofrendo/sndhrdw
+)
 
 add_executable (LGFX_SDL ${Target_Files} ${RACHELE_SRCS} ${RACHELE_SRCS_EXTRA})
 
 # includeするファイルのパスを指定する;
 # LovyanGFXのあるパスと位置関係を変えた場合は相対パス記述を環境に合わせて調整すること;
-target_include_directories(LGFX_SDL PUBLIC "Lib/LovyanGFX/src/")
+target_include_directories(LGFX_SDL PUBLIC "Lib/LovyanGFX/src/" ${NOFRENDO_INCS})
 
 
 # Mooncake 

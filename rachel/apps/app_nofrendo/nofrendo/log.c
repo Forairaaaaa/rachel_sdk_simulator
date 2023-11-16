@@ -26,10 +26,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
-// #include <noftypes.h>
-#include "noftypes.h"
-// #include <log.h>
-#include "log.h"
+#include <noftypes.h>
+#include <log.h>
 
 
 //static FILE *errorlog = NULL;
@@ -108,7 +106,7 @@ int log_print(const char *string)
    return 0;
 }
 
-int log_printf(const char *format, ... )
+int ___log_printf(const char *format, ... )
 {
    UNUSED(format);
 
@@ -127,11 +125,13 @@ void log_assert(int expr, int line, const char *file, char *msg)
       return;
 
    if (NULL != msg)
-      log_printf("ASSERT: line %d of %s, %s\n", line, file, msg);
+      ___log_printf("ASSERT: line %d of %s, %s\n", line, file, msg);
    else
-      log_printf("ASSERT: line %d of %s\n", line, file);
+      ___log_printf("ASSERT: line %d of %s\n", line, file);
 
-   // asm("break.n 1");
+#ifdef ESP_PLATFORM
+   asm("break.n 1");
+#endif
 //   exit(-1);
 }
 

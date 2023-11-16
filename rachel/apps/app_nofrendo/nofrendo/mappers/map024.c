@@ -23,16 +23,11 @@
 ** $Id: map024.c,v 1.2 2001/04/27 14:37:11 neil Exp $
 */
 
-// #include <noftypes.h>
-#include "../noftypes.h"
-// #include <nes_mmc.h>
-#include "../nes/nes_mmc.h"
-// #include <nes.h>
-#include "../nes/nes.h"
-// #include <log.h>
-#include "../log.h"
-// #include <vrcvisnd.h>
-#include "../sndhrdw/vrcvisnd.h"
+#include <noftypes.h>
+#include <nes_mmc.h>
+#include <nes.h>
+#include <log.h>
+#include <vrcvisnd.h>
 
 static struct
 {

@@ -8,16 +8,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// #include <noftypes.h>
-#include "noftypes.h"
-// #include <log.h>
-#include "log.h"
-// #include <osd.h>
-#include "osd.h"
-// #include <nofconfig.h>
-#include "nofconfig.h"
-// #include <version.h>
-#include "version.h"
+#include <noftypes.h>
+#include <log.h>
+#include <osd.h>
+#include <nofconfig.h>
+#include <version.h>
 
 typedef struct myvar_s
 {
@@ -232,7 +227,7 @@ static int load_config(char *filename)
                s = strchr(s, ']');
                if (NULL == s)
                {
-                  log_printf("load_config: missing ']' after group\n");
+                  ___log_printf("load_config: missing ']' after group\n");
                   s = group + strlen(group);
                }
                else
@@ -252,7 +247,7 @@ static int load_config(char *filename)
                s = strchr(s, '=');
                if (NULL == s)
                {
-                  log_printf("load_config: missing '=' after key\n");
+                  ___log_printf("load_config: missing '=' after key\n");
                   s = key + strlen(key);
                }
                else
@@ -273,7 +268,7 @@ static int load_config(char *filename)
                   myvar_t *var = my_create(group ? group : "", key, s);
                   if (NULL == var)
                   {
-                     log_printf("load_config: my_create failed\n");
+                     ___log_printf("load_config: my_create failed\n");
                      return -1;
                   }
 
@@ -304,7 +299,7 @@ static int save_config(char *filename)
    config_file = fopen(filename, "w");
    if (NULL == config_file)
    {
-      log_printf("save_config failed\n");
+      ___log_printf("save_config failed\n");
       return -1;
    }
 
@@ -342,7 +337,7 @@ static void write_int(const char *group, const char *key, int value)
    var = my_create(group, key, buf);
    if (NULL == var)
    {
-      log_printf("write_int failed\n");
+      ___log_printf("write_int failed\n");
       return;
    }
 
@@ -376,7 +371,7 @@ static void write_string(const char *group, const char *key, const char *value)
    var = my_create(group, key, value);
    if (NULL == var)
    {
-      log_printf("write_string failed\n");
+      ___log_printf("write_string failed\n");
       return;
    }
 

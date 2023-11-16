@@ -25,10 +25,8 @@
 
 #include <string.h>
 #include <stdlib.h>
-// #include <noftypes.h>
-#include "noftypes.h"
-// #include <intro.h>
-#include "intro.h"
+#include <noftypes.h>
+#include <intro.h>
 
 #define  CODE_SIZE   0x4000
 #define  VROM_SIZE   0x2000

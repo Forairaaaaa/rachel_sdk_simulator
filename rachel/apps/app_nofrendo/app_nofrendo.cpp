@@ -1,7 +1,7 @@
 /**
  * @file app_nofrendo.cpp
  * @author Forairaaaaa
- * @brief 
+ * @brief Ref: https://github.com/pebri86/esplay-retro-emulation/tree/master
  * @version 0.1
  * @date 2023-11-04
  * 
@@ -12,8 +12,8 @@
 #include "spdlog/spdlog.h"
 #include "../../hal/hal.h"
 #include "../assets/theme/theme.h"
-
-extern "C" {
+extern "C"
+{
     #include "nofrendo/nofrendo.h"
 }
 
@@ -30,12 +30,18 @@ void AppNofrendo::onCreate()
 void AppNofrendo::onResume()
 {
     spdlog::info("{} onResume", getAppName());
+    HAL::GetCanvas()->fillScreen(TFT_BLACK);
+    HAL::CanvasUpdate();
 }
 
 
 void AppNofrendo::onRunning()
 {
+#ifdef ESP_PLATFORM
     nofrendo_main(0, NULL);
+#else
+    HAL::PopFatalError("懒得抽象了");
+#endif
 }
 
 

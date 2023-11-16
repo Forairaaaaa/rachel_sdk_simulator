@@ -7,8 +7,6 @@
 
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
-#include "noftypes.h"
-
 
 #ifndef CONFIG_FILE
 #define CONFIG_FILE "nofrendo.cfg"

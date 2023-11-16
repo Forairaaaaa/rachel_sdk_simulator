@@ -26,20 +26,13 @@
 #ifndef _NES_H_
 #define _NES_H_
 
-// #include <noftypes.h>
-#include "../noftypes.h"
-// #include <nes_apu.h>
-#include "../sndhrdw/nes_apu.h"
-// #include <nes_mmc.h>
-#include "../nes/nes_mmc.h"
-// #include <nes_ppu.h>
-#include "../nes/nes_ppu.h"
-// #include <nes_rom.h>
-#include "../nes/nes_rom.h"
-// #include "nes6502.h"
-#include "../cpu/nes6502.h"
-// #include <bitmap.h>
-#include "../bitmap.h"
+#include <noftypes.h>
+#include <nes_apu.h>
+#include <nes_mmc.h>
+#include <nes_ppu.h>
+#include <nes_rom.h>
+#include "nes6502.h"
+#include <bitmap.h>
 
 /* Visible (NTSC) screen height */
 #ifndef NES_VISIBLE_HEIGHT
@@ -77,10 +70,7 @@ typedef struct nes_s
    rominfo_t *rominfo;
 
    /* video buffer */
-   /* For the ESP32, it costs too much memory to render to a separate buffer and blit that to the main buffer.
-      Instead, the code has been modified to directly grab the primary buffer from the video subsystem and render
-      there, saving us about 64K of memory. */
-//   bitmap_t *vidbuf; 
+   bitmap_t *vidbuf;
 
    bool fiq_occurred;
    uint8 fiq_state;

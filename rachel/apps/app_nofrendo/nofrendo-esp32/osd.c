@@ -20,19 +20,13 @@
 #include <sys/types.h>
 #include <unistd.h>
        
-// #include <noftypes.h>
-#include "../nofrendo/nofrendo.h"
-// #include <nofconfig.h>
-#include "../nofrendo/nofconfig.h"
-// #include <log.h>
-#include "../nofrendo/log.h"
-// #include <osd.h>
-#include "../nofrendo/osd.h"
-// #include <nofrendo.h>
-#include "../nofrendo/nofrendo.h"
+#include <noftypes.h>
+#include <nofconfig.h>
+#include <log.h>
+#include <osd.h>
+#include <nofrendo.h>
 
-// #include <version.h>
-#include "../nofrendo/version.h"
+#include <version.h>
 
 char configfilename[]="na";
 
@@ -41,7 +35,7 @@ int osd_main(int argc, char *argv[])
 {
    config.filename = configfilename;
 
-   return main_loop("rom", system_autodetect);
+   return main_loop("rom", system_nes);
 }
 
 /* File system interface */

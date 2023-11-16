@@ -25,7 +25,7 @@
 
 #ifndef _NES_APU_H_
 #define _NES_APU_H_
-#include "../noftypes.h"
+
 
 /* define this for realtime generated noise */
 #define  REALTIME_NOISE

@@ -26,30 +26,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-// #include <noftypes.h>
-#include "noftypes.h"
-// #include <nes_ppu.h>
-#include "nes/nes_ppu.h"
-// #include <nes_apu.h>
-#include "sndhrdw/nes_apu.h"
-// #include <nesinput.h>
-#include "nes/nesinput.h"
-// #include <nes.h>
-#include "nes/nes.h"
-// #include <log.h>
-#include "log.h"
-// #include <osd.h>
-#include "osd.h"
+#include <noftypes.h>
+#include <nes_ppu.h>
+#include <nes_apu.h>
+#include <nesinput.h>
+#include <nes.h>
+#include <log.h>
+#include <osd.h>
 
-// #include <bitmap.h>
-#include "bitmap.h"
+#include <bitmap.h>
 
-// #include <gui.h>
-#include "gui.h"
-// #include <gui_elem.h>
-#include "gui_elem.h"
-// #include <vid_drv.h>
-#include "vid_drv.h"
+#include <gui.h>
+#include <gui_elem.h>
+#include <vid_drv.h>
 
 /* TODO: oh god */
 /* 8-bit GUI color table */
@@ -72,10 +61,8 @@ rgb_t gui_pal[GUI_TOTALCOLORS] =
 };
 
 /**************************************************************/
-// #include <pcx.h>
-#include "pcx.h"
-// #include <nesstate.h>
-#include "nes/nesstate.h"
+#include <pcx.h>
+#include <nesstate.h>
 static bool option_drawsprites = true;
 
 /* save a PCX snapshot */
@@ -87,7 +74,7 @@ void gui_savesnap(void)
    if (osd_makesnapname(filename, PATH_MAX) < 0)
       return;
 
-   if (pcx_write(filename, vid_getbuffer(), nes->ppu->curpal)) 
+   if (pcx_write(filename, nes->vidbuf, nes->ppu->curpal)) 
       return;
 
    gui_sendmsg(GUI_GREEN, "Screen saved to %s", filename);

@@ -26,12 +26,8 @@
 #ifndef _NES_MMC_H_
 #define _NES_MMC_H_
 
-#include "../noftypes.h"
-
-// #include <libsnss.h>
-#include "../libsnss/libsnss.h"
-// #include <nes_apu.h>
-#include "../sndhrdw/nes_apu.h"
+#include <libsnss.h>
+#include <nes_apu.h>
 
 #define  MMC_LASTBANK      -1
 
@@ -63,8 +59,7 @@ typedef struct mapintf_s
 } mapintf_t;
 
 
-// #include <nes_rom.h>
-#include "../nes/nes_rom.h"
+#include <nes_rom.h>
 typedef struct mmc_s
 {
    mapintf_t *intf;

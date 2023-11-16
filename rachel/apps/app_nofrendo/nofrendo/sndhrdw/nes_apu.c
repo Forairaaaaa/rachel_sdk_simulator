@@ -24,14 +24,10 @@
 */
 
 #include <string.h>
-// #include <noftypes.h>
-#include "../noftypes.h"
-// #include <log.h>
-#include "../log.h"
-// #include <nes_apu.h>
-#include "nes_apu.h"
-// #include "nes6502.h"
-#include "../cpu/nes6502.h"
+#include <noftypes.h>
+#include <log.h>
+#include <nes_apu.h>
+#include "nes6502.h"
  
 
 #define  APU_OVERSAMPLE

@@ -23,12 +23,9 @@
 ** $Id: fds_snd.c,v 1.2 2001/04/27 14:37:11 neil Exp $
 */
 
-// #include <noftypes.h>
-#include "../noftypes.h"
-// #include <nes_apu.h>
-#include "nes_apu.h"
-// #include <fds_snd.h>
-#include "fds_snd.h"
+#include <noftypes.h>
+#include <nes_apu.h>
+#include <fds_snd.h>
 
 static int32 fds_incsize = 0;
 

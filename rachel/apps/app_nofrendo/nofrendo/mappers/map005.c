@@ -23,16 +23,11 @@
 ** $Id: map005.c,v 1.2 2001/04/27 14:37:11 neil Exp $
 */
 
-// #include <noftypes.h>
-#include "../noftypes.h"
-// #include <nes_mmc.h>
-#include "../nes/nes_mmc.h"
-// #include <nes.h>
-#include "../nes/nes.h"
-// #include <log.h>
-#include "../log.h"
-// #include "mmc5_snd.h"
-#include "../sndhrdw/mmc5_snd.h"
+#include <noftypes.h>
+#include <nes_mmc.h>
+#include <nes.h>
+#include <log.h>
+#include "mmc5_snd.h"
 
 /* TODO: there's lots of info about this mapper now;
 ** let's implement it correctly/completely

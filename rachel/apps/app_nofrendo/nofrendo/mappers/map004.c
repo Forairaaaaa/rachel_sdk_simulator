@@ -3,14 +3,14 @@
 **
 **
 ** This program is free software; you can redistribute it and/or
-** modify it under the terms of version 2 of the GNU Library General 
+** modify it under the terms of version 2 of the GNU Library General
 ** Public License as published by the Free Software Foundation.
 **
-** This program is distributed in the hope that it will be useful, 
+** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
-** Library General Public License for more details.  To obtain a 
-** copy of the GNU Library General Public License, write to the Free 
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Library General Public License for more details.  To obtain a
+** copy of the GNU Library General Public License, write to the Free
 ** Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 **
 ** Any permitted reproduction of these routines, in whole or in part,
@@ -23,14 +23,10 @@
 ** $Id: map004.c,v 1.2 2001/04/27 14:37:11 neil Exp $
 */
 
-// #include <noftypes.h>
-#include "../noftypes.h"
-// #include <nes_mmc.h>
-#include "../nes/nes_mmc.h"
-// #include <nes.h>
-#include "../nes/nes.h"
-// #include <libsnss.h>
-#include "../libsnss/libsnss.h"
+#include <noftypes.h>
+#include <nes_mmc.h>
+#include <nes.h>
+#include <libsnss.h>
 
 static struct
 {
@@ -50,7 +46,7 @@ static void map4_write(uint32 address, uint8 value)
    case 0x8000:
       command = value;
       vrombase = (command & 0x80) ? 0x1000 : 0x0000;
-      
+
       if (reg != (value & 0x40))
       {
          if (value & 0x40)
@@ -142,6 +138,11 @@ static void map4_write(uint32 address, uint8 value)
       break;
 
    default:
+      //printf("map004: unhandled write: address=%p, value=0x%x\n", (void*)address, value);
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
+      __asm__("nop");
       break;
    }
 

@@ -3,14 +3,14 @@
 **
 **
 ** This program is free software; you can redistribute it and/or
-** modify it under the terms of version 2 of the GNU Library General 
+** modify it under the terms of version 2 of the GNU Library General
 ** Public License as published by the Free Software Foundation.
 **
-** This program is distributed in the hope that it will be useful, 
+** This program is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
-** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
-** Library General Public License for more details.  To obtain a 
-** copy of the GNU Library General Public License, write to the Free 
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+** Library General Public License for more details.  To obtain a
+** copy of the GNU Library General Public License, write to the Free
 ** Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 **
 ** Any permitted reproduction of these routines, in whole or in part,
@@ -24,27 +24,19 @@
 */
 
 /* TODO: make this a generic ROM loading routine */
+#include <stdlib.h>
 
 #include <stdio.h>
 #include <string.h>
-// #include <noftypes.h>
-#include "../noftypes.h"
-// #include <nes_rom.h>
-#include "../nes/nes_rom.h"
-// #include <intro.h>
-#include "../intro.h"
-// #include <nes_mmc.h>
-#include "../nes/nes_mmc.h"
-// #include <nes_ppu.h>
-#include "../nes/nes_ppu.h"
-// #include <nes.h>
-#include "../nes/nes.h"
-// #include <gui.h>
-#include "../gui.h"
-// #include <log.h>
-#include "../log.h"
-// #include <osd.h>
-#include "../osd.h"
+#include <noftypes.h>
+#include <nes_rom.h>
+#include <intro.h>
+#include <nes_mmc.h>
+#include <nes_ppu.h>
+#include <nes.h>
+#include <gui.h>
+#include <log.h>
+#include <osd.h>
 
 extern char *osd_getromdata();
 
@@ -109,7 +101,7 @@ static void rom_savesram(rominfo_t *rominfo)
       {
          fwrite(rominfo->sram, SRAM_BANK_LENGTH, rominfo->sram_banks, fp);
          fclose(fp);
-         log_printf("Wrote battery RAM to %s.\n", fn);
+         ___log_printf("Wrote battery RAM to %s.\n", fn);
       }
    }
 }
@@ -132,7 +124,7 @@ static void rom_loadsram(rominfo_t *rominfo)
       {
          fread(rominfo->sram, SRAM_BANK_LENGTH, rominfo->sram_banks, fp);
          fclose(fp);
-         log_printf("Read battery RAM from %s.\n", fn);
+         ___log_printf("Read battery RAM from %s.\n", fn);
       }
    }
 }
@@ -144,8 +136,8 @@ static int rom_allocsram(rominfo_t *rominfo)
    rominfo->sram = malloc(SRAM_BANK_LENGTH * rominfo->sram_banks);
    if (NULL == rominfo->sram)
    {
-      gui_sendmsg(GUI_RED, "Could not allocate space for battery RAM");
-      return -1;
+      printf("Could not allocate space for battery RAM");
+      abort(); //return -1;
    }
 
    /* make damn sure SRAM is clear */
@@ -164,7 +156,7 @@ static void rom_loadtrainer(unsigned char **rom, rominfo_t *rominfo)
 //      fread(rominfo->sram + TRAINER_OFFSET, TRAINER_LENGTH, 1, fp);
       memcpy(rominfo->sram + TRAINER_OFFSET, *rom, TRAINER_LENGTH);
       rom+=TRAINER_LENGTH;
-      log_printf("Read in trainer at $7000\n");
+      ___log_printf("Read in trainer at $7000\n");
    }
 }
 
@@ -208,8 +200,8 @@ static int rom_loadrom(unsigned char **rom, rominfo_t *rominfo)
       rominfo->vram = malloc(VRAM_LENGTH);
       if (NULL == rominfo->vram)
       {
-         gui_sendmsg(GUI_RED, "Could not allocate space for VRAM");
-         return -1;
+         printf("Could not allocate space for VRAM");
+         abort(); //return -1;
       }
       memset(rominfo->vram, 0, VRAM_LENGTH);
    }
@@ -246,7 +238,7 @@ static void rom_checkforpal(rominfo_t *rominfo)
    rominfo->flags |= ROM_FLAG_VERSUS;
    /* TODO: bad, BAD idea, calling nes_getcontextptr... */
    ppu_setpal(nes_getcontextptr()->ppu, vs_pal);
-   log_printf("Game specific palette found -- assuming VS. UniSystem\n");
+   ___log_printf("Game specific palette found -- assuming VS. UniSystem\n");
 }
 
 static FILE *rom_findrom(const char *filename, rominfo_t *rominfo)
@@ -385,10 +377,10 @@ static int rom_getheader(unsigned char **rom, rominfo_t *rominfo)
 
       /* @!?#@! DiskDude. */
       if (('D' == head.mapper_hinybble) && (0 == memcmp(head.reserved, "iskDude!", 8)))
-         log_printf("`DiskDude!' found in ROM header, ignoring high mapper nybble\n");
+         ___log_printf("`DiskDude!' found in ROM header, ignoring high mapper nybble\n");
       else
       {
-         log_printf("ROM header dirty, possible problem\n");
+         ___log_printf("ROM header dirty, possible problem\n");
          rominfo->mapper_number |= (head.mapper_hinybble & 0xF0);
       }
 
@@ -430,7 +422,7 @@ char *rom_getinfo(rominfo_t *rominfo)
    sprintf(temp, " [%d] %dk/%dk %c", rominfo->mapper_number,
            rominfo->rom_banks * 16, rominfo->vrom_banks * 8,
            (rominfo->mirror == MIRROR_VERT) ? 'V' : 'H');
-   
+
    /* Stick it on there! */
    strncat(info, temp, PATH_MAX - strlen(info));
 
@@ -456,6 +448,9 @@ rominfo_t *rom_load(const char *filename)
 
    memset(rominfo, 0, sizeof(rominfo_t));
 
+   strncpy(rominfo->filename, filename, sizeof(rominfo->filename));
+   printf("rom_load: rominfo->filename='%s'\n", rominfo->filename);
+
    /* Get the header and stick it into rominfo struct */
 	if (rom_getheader(&rom, rominfo))
       goto _fail;
@@ -474,7 +469,7 @@ rominfo_t *rom_load(const char *filename)
    if (rom_allocsram(rominfo))
       goto _fail;
 
-      rom_loadtrainer(&rom, rominfo);
+   rom_loadtrainer(&rom, rominfo);
 
 	if (rom_loadrom(&rom, rominfo))
       goto _fail;
@@ -507,7 +502,7 @@ void rom_free(rominfo_t **rominfo)
    {
       /* TODO: bad idea calling nes_getcontextptr... */
       ppu_setdefaultpal(nes_getcontextptr()->ppu);
-      log_printf("Default NES palette restored\n");
+      ___log_printf("Default NES palette restored\n");
    }
 
    rom_savesram(*rominfo);
