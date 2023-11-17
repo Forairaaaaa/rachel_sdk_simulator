@@ -41,6 +41,8 @@ void SYSTEM::UI::ProgressWindow(std::string title, uint8_t progress, bool lightM
     HAL::GetCanvas()->fillSmoothRoundRect(progress_bar.x, progress_bar.y, progress_bar.width, progress_bar.height, 10, color_dark);
 
     // Draw progress bar 
+    if (progress > 100)
+        progress = 100;
     HAL::GetCanvas()->fillSmoothRoundRect(
         progress_bar.x + 4, 
         progress_bar.y + 4, 
