@@ -37,17 +37,17 @@ void AppGenshin::onRunning()
 {
     HAL::LoadTextFont24();
 
-    // Loading 
-    std::vector<std::string> title_list = {"传送松山湖..", "打捞..", "CPU热拔插.."};
-    for (auto& title : title_list)
-    {
-        for (int i = 10; i <= 110; i += 20)
-        {
-            ProgressWindow(title, i);
-            HAL::CanvasUpdate();
-            HAL::Delay(100);
-        }
-    }
+    // // Loading 
+    // std::vector<std::string> title_list = {"传送松山湖..", "打捞..", "CPU热拔插.."};
+    // for (auto& title : title_list)
+    // {
+    //     for (int i = 10; i <= 110; i += 20)
+    //     {
+    //         ProgressWindow(title, i);
+    //         HAL::CanvasUpdate();
+    //         HAL::Delay(100);
+    //     }
+    // }
 
     // Launch 
     HAL::GetCanvas()->fillScreen(THEME_COLOR_LIGHT);
