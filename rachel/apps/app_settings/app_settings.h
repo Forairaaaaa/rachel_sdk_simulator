@@ -9,7 +9,7 @@
  * 
  */
 #include <mooncake.h>
-#include "assets/icon_app_settings.h"
+#include "assets/icon_app_settings.hpp"
 #include "../../utils/system/ui/ui.h"
 
 
@@ -33,6 +33,7 @@ namespace MOONCAKE::APPS
         void _page_sound();
         void _page_display();
         void _page_time();
+        void _page_about();
 
     public:
         void onCreate() override;
