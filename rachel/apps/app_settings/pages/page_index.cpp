@@ -1,26 +1,28 @@
 /**
- * @file page_index.hpp
+ * @file page_index.cpp
  * @author Forairaaaaa
  * @brief 
  * @version 0.1
- * @date 2023-11-13
+ * @date 2023-11-18
  * 
  * @copyright Copyright (c) 2023
  * 
  */
-#pragma once
+#include "../app_settings.h"
 #include "../../utils/system/ui/ui.h"
-#include "page_power.hpp"
 
 
+using namespace MOONCAKE::APPS;
 using namespace SYSTEM::UI;
 
 
-void page_index(SelectMenu& selectMenu)
+void AppSettings::_page_index()
 {
     std::vector<std::string> items = {
         "[SETTINGS]",
         "Power",
+        "Display",
+        "Sound",
         "Time",
         "About",
         "Quit"
@@ -28,10 +30,14 @@ void page_index(SelectMenu& selectMenu)
 
     while (1)
     {
-        auto selected = selectMenu.waitResult(items);
+        auto selected = _data.select_menu->waitResult(items);
 
         if (selected == 1)
-            page_power(selectMenu);
+            _page_power();
+        else if (selected == 2)
+            _page_display();
+        else if (selected == 3)
+            _page_sound();
         else
             break;
     }
