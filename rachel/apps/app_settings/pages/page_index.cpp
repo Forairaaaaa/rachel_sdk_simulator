@@ -38,6 +38,8 @@ void AppSettings::_page_index()
             _page_display();
         else if (selected == 3)
             _page_sound();
+        else if (selected == 4)
+            _page_time();
         else
             break;
     }

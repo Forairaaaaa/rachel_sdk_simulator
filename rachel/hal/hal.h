@@ -181,6 +181,7 @@ public:
     static void Reboot() { Get()->reboot(); }
     virtual void reboot() {}
 
+    // Set time to RTC 
     static void SetSystemTime(tm dateTime) { return Get()->setSystemTime(dateTime); }
     virtual void setSystemTime(tm dateTime) {}
 

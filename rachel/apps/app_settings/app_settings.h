@@ -32,6 +32,7 @@ namespace MOONCAKE::APPS
         void _page_power();
         void _page_sound();
         void _page_display();
+        void _page_time();
 
     public:
         void onCreate() override;
