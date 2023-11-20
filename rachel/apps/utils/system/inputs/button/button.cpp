@@ -19,7 +19,7 @@
 #include "../../../hal/hal.h"
 
 
-using namespace SYSTEM::INPUT;
+using namespace SYSTEM::INPUTS;
 
 
 // 

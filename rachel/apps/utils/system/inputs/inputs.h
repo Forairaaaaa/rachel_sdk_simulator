@@ -1,5 +1,5 @@
 /**
- * @file input.h
+ * @file inputs.h
  * @author Forairaaaaa
  * @brief 
  * @version 0.1

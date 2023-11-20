@@ -20,7 +20,7 @@
 #include "../../../hal/hal.h"
 
 
-namespace SYSTEM::INPUT
+namespace SYSTEM::INPUTS
 {
     /**
      * @brief Simple but supper useful button class 

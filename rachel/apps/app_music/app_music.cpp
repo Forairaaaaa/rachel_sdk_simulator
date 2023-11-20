@@ -13,9 +13,17 @@
 #include "../../hal/hal.h"
 #include "../assets/theme/theme.h"
 #include "../utils/system/ui/ui.h"
+#include "../utils/system/audio/audio.h"
+#ifdef ESP_PLATFORM
+#include <Arduino.h>
+#include <FS.h>
+#include <SD.h>
+#endif
 
 
 using namespace MOONCAKE::APPS;
+using namespace SYSTEM::UI;
+using namespace SYSTEM::AUDIO;
 
 
 void AppMusic::onCreate()
@@ -27,99 +35,89 @@ void AppMusic::onCreate()
 void AppMusic::onResume()
 {
     spdlog::info("{} onResume", getAppName());
-
-    HAL::GetCanvas()->setTextScroll(true);
-    HAL::GetCanvas()->setCursor(0, 0);
-    HAL::GetCanvas()->clear(THEME_COLOR_LIGHT);
-    HAL::LoadTextFont24();
-    HAL::GetCanvas()->setTextColor(THEME_COLOR_DARK, THEME_COLOR_LIGHT);
 }
 
 
-using namespace SYSTEM::UI;
-
+#ifdef ESP_PLATFORM
+static const String _music_path = "/buzz_music";
 
 void AppMusic::onRunning()
 {
-    // // Every seconds 
-    // if ((HAL::Millis() - _data.count) > 1000)
-    // {
-    //     spdlog::info("{}: Hi", getAppName());
-
-        
-    //     HAL::GetCanvas()->printf(" Hi!");
-    //     HAL::CanvasUpdate();
+    if (!HAL::CheckSdCard())
+        HAL::PopFatalError("没SD卡啊朋友");
+    spdlog::info("try loading music from SD card in {}", _music_path.c_str());
 
 
-    //     _data.count = HAL::Millis();
-    // }
+    // Check path 
+    if (!SD.exists(_music_path))
+    {
+        std::string msg = "音乐路径不存在\n  (";
+        msg += _music_path.c_str();
+        msg += ")";
+        HAL::PopFatalError(msg);
+    }
 
 
-    // // Press Select to quit  
-    // if (HAL::GetButton(GAMEPAD::BTN_SELECT))
-    //     destroyApp();
-
-
-    
-
-
-
-
-    auto select_menu = SelectMenu();
-
-    std::vector<std::string> test = {
-        "[MENU TYPE]",
-        "Left",
-        "Center",
-        "Right",
-        "Settings",
-        "Quit"
-    };
-
-    std::vector<std::string> settings = {
-        "[SETTINGS]",
-        "asdasdasd",
-        "9879ht",
-        "5465gmiokn",
-        "1221d3ffff",
-        "-=-=--=-dd",
-        "00000000",
-        ":)",
-        "-=-=--=-dd",
-        "00000000",
-        ":)",
-        "Back"
-    };
-
-    auto alignment = SelectMenu::ALIGN_LEFT;
+    // List music dir 
+    auto music_directory = SD.open(_music_path);
+    std::vector<std::string> music_list = {"[MUSIC]"};
     while (1)
     {
-        auto result = select_menu.waitResult(test, alignment);
+        File entry =  music_directory.openNextFile();
 
-        if (result == 1)
-            alignment = SelectMenu::ALIGN_LEFT;
-        else if (result == 2)
-            alignment = SelectMenu::ALIGN_CENTER;
-        else if (result == 3)
-            alignment = SelectMenu::ALIGN_RIGHT;
+        if (!entry)
+            break;
 
-        else if (result == 4)
+        if (!entry.isDirectory())
         {
-            while (1)
+            // Filter 
+            if (std::strstr(entry.name(), ".json") != NULL)
             {
-                result = select_menu.waitResult(settings, alignment);
-                if (result == settings.size() - 1)
-                    break;
+                music_list.push_back(entry.name());
+                spdlog::info("get file: {} size: {}", entry.name(), entry.size());
             }
         }
+        
+        entry.close();    
+    }
+    if (music_list.size() == 1)
+        HAL::PopFatalError("没音乐啊朋友");
+    music_list.push_back("Quit");
 
-        else
+
+    // Create select menu
+    SelectMenu menu;
+    while (1)
+    {
+        auto selected_item = menu.waitResult(music_list);
+
+        if (selected_item == music_list.size() - 1)
             break;
+
+        // ~ 
+        HAL::GetCanvas()->fillSmoothRoundRect((240 - 180) / 2,  (240 - 120) / 2, 180, 120, 20, THEME_COLOR_LIGHT);
+        HAL::GetCanvas()->setTextColor(THEME_COLOR_DARK, THEME_COLOR_LIGHT);
+        HAL::GetCanvas()->drawCenterString("Playing..", 120, 120 - 12);
+        HAL::CanvasUpdate();
+        
+        // Play 
+        String music_path = _music_path;
+        music_path += "/";
+        music_path += music_list[selected_item].c_str();
+        BuzzMusicPlayer::playFromSdCard(music_path.c_str());
     }
 
 
     destroyApp();
 }
+#else
+
+void AppMusic::onRunning()
+{
+    HAL::PopFatalError("懒得抽象了");
+}
+
+#endif
 
 
 void AppMusic::onDestroy()

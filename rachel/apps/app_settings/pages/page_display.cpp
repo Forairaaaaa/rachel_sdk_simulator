@@ -10,7 +10,7 @@
  */
 #include "../app_settings.h"
 #include "../../utils/system/ui/ui.h"
-#include "../../utils//system/input/input.h"
+#include "../../utils//system/inputs/inputs.h"
 #include "../../../hal/hal.h"
 #include "spdlog/spdlog.h"
 #include <cstdint>
@@ -19,7 +19,7 @@
 
 using namespace MOONCAKE::APPS;
 using namespace SYSTEM::UI;
-using namespace SYSTEM::INPUT;
+using namespace SYSTEM::INPUTS;
 
 
 static void _handle_brightness_config()
