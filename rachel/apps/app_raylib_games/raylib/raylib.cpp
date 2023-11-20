@@ -62,6 +62,18 @@ void DrawCircleV(Vector2 center, float r, uint32_t color)
 }
 
 
+void DrawLineV(Vector2 startPos, Vector2 endPos, uint32_t color)
+{
+    HAL::GetCanvas()->drawLine(startPos.x, startPos.y, endPos.x, endPos.y, color);
+}
+
+
+void DrawRectangleV(Vector2 position, Vector2 size, uint32_t color)
+{
+    HAL::GetCanvas()->fillRect(position.x, position.y, size.x, size.y, color);
+}
+
+
 #include <random>
 std::random_device rd;
 std::mt19937 gen(rd());
