@@ -13,3 +13,4 @@
 
 namespace ARKANOID { int main(void); }
 namespace SNAKE { int main(void); }
+namespace TETRIS { int main(void); }

@@ -68,6 +68,12 @@ void DrawLineV(Vector2 startPos, Vector2 endPos, uint32_t color)
 }
 
 
+void DrawLine(int startPosX, int startPosY, int endPosX, int endPosY, uint32_t color)
+{
+    HAL::GetCanvas()->drawLine(startPosX, startPosY, endPosX, endPosY, color);
+}
+
+
 void DrawRectangleV(Vector2 position, Vector2 size, uint32_t color)
 {
     HAL::GetCanvas()->fillRect(position.x, position.y, size.x, size.y, color);
