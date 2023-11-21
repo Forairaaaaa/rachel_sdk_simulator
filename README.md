@@ -206,7 +206,7 @@ HAL::PowerOff();
 // 重启
 HAL::Reboot();
 
-// 获取当前时间
+// 设置RTC时间
 HAL::SetSystemTime(tm dateTime);
 
 // 获取当前时间
