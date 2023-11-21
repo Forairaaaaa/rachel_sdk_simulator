@@ -32,17 +32,72 @@ cmake .. && make
 
 
 
-## Create an App
+## 创建App, Create an App
+
+##### 写了个 python 脚本用来简化 App 创建: 
+
+```shell
+python3 ./src/rachel/apps/tools/app_generator.py
+```
+
+​	$ Rachel app generator > <
+​	$ app name:
+
+```
+hello_world
+```
+
+​	$ file names:
+
+​	$ - ../app_hello_world/app_hello_world.cpp
+
+​	$ - ../app_hello_world/app_hello_world.h
+
+​	$ app class name: AppHello_world
+
+​	$ install app hello_world
+
+​	$ done
+
+##### App 就创建好了, 重新编译上传:
 
 
 
+##### 新创建的 App 基本模板如下, 详细的生命周期和API可以参考 [Mooncake](https://github.com/Forairaaaaa/mooncake) 项目
+
+```cpp
+// Like setup()...
+void AppTemplate::onResume()
+{
+    spdlog::info("{} onResume", getAppName());
+
+    _quit_count = 0;
+}
 
 
-## HAL APIs
+// Like loop()...
+void AppTemplate::onRunning()
+{    
+    spdlog::info("咩啊");
+    HAL::Delay(1000);
 
-HAL is a singleton, injected during SDK's init.
+    _quit_count++;
+    if (_quit_count > 5)
+        destroyApp();
+}
+```
 
-HAL为单例模式, SDK初始化时注入.
+Mooncake 框架内部集成了 [spdlog](https://github.com/gabime/spdlog) 日志库, 当然你也可以继续用 std::cout, printf, Serial...
+
+
+
+## 硬件抽象层API, HAL API
+
+HAL为**单例**模式，[当SDK初始化时被注入](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L34). 
+
+如有不同底层硬件需求, 只需派生新的[HAL](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal.h#L84)对象, 改写虚函数并在初始化时注入即可.
+
+HAL is a **singleton**, [injected during SDK's init](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L34). 
 
 ### Include
 
@@ -50,80 +105,126 @@ HAL为单例模式, SDK初始化时注入.
 #include "{path to}/hal/hal.h"
 ```
 
-### Display APIs
+### 显示API, Display API
 
 ```cpp
-HAL::GetDisplay()		// Get display device, 获取屏幕驱动实例
-HAL::GetCanvas()		// Get full screen canvas (sprite), 获取全屏Buffer实例
-HAL::CanvasUpdate()		// Push framebuffer, 推送全屏buffer到显示屏 
-HA::RenderFpsPanel()	// Render fps panel, 渲染FPS面板 
+// 获取屏幕驱动实例, Get display device
+HAL::GetDisplay();
+
+// 获取全屏Buffer实例, Get full screen canvas (sprite)
+HAL::GetCanvas();
+
+// 推送全屏buffer到显示屏, Push framebuffer
+HAL::CanvasUpdate();
+
+// 渲染FPS面板, Render fps panel
+HA::RenderFpsPanel();
 ```
 
-### System APIs
+显示驱动使用 [LovyanGFX](https://github.com/lovyan03/LovyanGFX), 详细的图形API可以参考原项目[示例](https://github.com/lovyan03/LovyanGFX/tree/master/examples/HowToUse)
+
+### 系统API, System API
 
 ```cpp
-HAL::Delay(unsigned long milliseconds)	// Delay(ms), 延时(毫秒)
-HAL::Millis() 			// Get the number of milliseconds passed since boot, 获取系统运行毫秒数
-HAL::PowerOff()			// Power off, 关机
-HAL::Reboot()			// Reboot, 重启 
-HAL::SetSystemTime(tm dateTime)	// Get local time(wrap of localtime()), 获取当前时间
-HAL::GetLocalTime()		// Get local time(wrap of localtime()), 获取当前时间
-HAL::PopFatalError(std::string msg)	// Pop error message and wait reboot, 优雅地抛个蓝屏 
+// 延时(毫秒), Delay(ms)
+HAL::Delay(unsigned long milliseconds);
+
+// 获取系统运行毫秒数, Get the number of milliseconds passed since boot 
+HAL::Millis();
+
+// 关机, Power off
+HAL::PowerOff();
+
+// 重启, Reboot
+HAL::Reboot();
+
+// 获取当前时间, Get local time(wrap of localtime())
+HAL::SetSystemTime(tm dateTime);
+
+// 获取当前时间, Get local time(wrap of localtime())
+HAL::GetLocalTime();
+
+// 优雅地抛个蓝屏, Pop error message and wait reboot
+HAL::PopFatalError(std::string msg);
 ```
 
-### Peripheral APIs
+HAL_Rachel 在初始化时会以RTC时间[调整系统时间](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal_rachel/components/hal_rtc.cpp#L70), 所以关于时间的POSIX标准API都可以正常使用
+
+### 外设API, Peripheral API
 
 ```cpp
-HAL::UpdateImuData()	// Update IMU data, 刷新IMU数据
-HAL::GetImuData()		// Get the Imu Data, 获取IMU数据
-HAL::Beep(float frequency, uint32_t duration)	// Buzzer beep, 蜂鸣器开始哔哔
-HAL::BeepStop()			// Stop buzzer beep, 蜂鸣器别叫了 
-HAL::CheckSdCard()		// Check if sd card is valid, 检查SD卡是否可用
-HAL::GetButton(GAMEPAD::GamePadButton_t button)	// Get button state, 获取按键状态 
-HAL::GetAnyButton()		// Get any button state, 获取任意按键状态 
+// 刷新IMU数据, Update IMU data
+HAL::UpdateImuData();
+
+// 获取IMU数据, Get the Imu Data
+HAL::GetImuData();
+
+// 蜂鸣器开始哔哔, Buzzer beep
+HAL::Beep(float frequency, uint32_t duration);
+
+// 蜂鸣器别叫了, Stop buzzer beep
+HAL::BeepStop();
+
+// 检查SD卡是否可用, Check if sd card is valid
+HAL::CheckSdCard();
+
+// 获取按键状态, Get button state 
+HAL::GetButton(GAMEPAD::GamePadButton_t button);
+
+// 获取任意按键状态, Get any button state
+HAL::GetAnyButton();
 ```
 
-### System config APIs
+### 系统配置API, System config API
 
 ```cpp
-HAL::LoadSystemConfig()	// Load system config from FS, 从内部FS导入系统配置 
-HAL::SaveSystemConfig()	// Save system config to FS, 保存系统配置到内部FS
-HAL::GetSystemConfig()	// Get the System Config, 获取系统配置 
-HAL::SetSystemConfig(CONFIG::SystemConfig_t cfg)	// Set the System Config, 设置系统配置 
-HAL::UpdateSystemFromConfig()	// Update device to the system config, 以系统配置刷新设备
+// 从内部FS导入系统配置, Load system config from FS 
+HAL::LoadSystemConfig();
+
+// 保存系统配置到内部FS, Save system config to FS 
+HAL::SaveSystemConfig();
+
+// 获取系统配置, Get the System Config 
+HAL::GetSystemConfig();
+
+// 设置系统配置, Set the System Config 
+HAL::SetSystemConfig(CONFIG::SystemConfig_t cfg);
+
+// 以系统配置刷新设备, Update device to the system config 
+HAL::UpdateSystemFromConfig();
 ```
 
 
 
-## System utils
+## 通用组件库, System utils
+
+一些比较有用的通用封装库放在了这里  `rachel/apps/utils/system`
 
 Useful utilities (hal api based) are integrated in `rachel/apps/utils/system`
 
-一些比较有用的HAL封装放在了这里  `rachel/apps/utils/system`
 
 
+### 选择菜单, Select menu
 
-### Select menu
+创建一个[选择菜单](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/utils/system/ui/select_menu/select_menu.h).
 
-Create a menu for selecting.
+Create a [select menu](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/utils/system/ui/select_menu/select_menu.h).
 
-创建一个选择菜单.
-
-### Include
+#### Include
 
 ```cpp
 #include "{path to}/utils/system/ui/ui.h"
 ```
 
-### Example
+#### Example
 
 ```cpp
 using namespace SYSTEM::UI;
 
-// Create a select menu, 创建选择菜单 
+// 创建选择菜单, Create a select menu 
 auto select_menu = SelectMenu();
 
-// Create item list, 创建选项列表 
+// 创建选项列表, Create item list 
 std::vector<std::string> items = {
     "[WHAT 7 TO PLAY]",
     "Jenshin Import",
@@ -133,26 +234,26 @@ std::vector<std::string> items = {
     "Quit"
 };
 
-// Wait select result, 等待选择 
+// 等待选择, Wait select result  
 auto selected_index = select_menu.waitResult(items);
 spdlog::info("selected: {}", items[selected_index]);
 ```
 
 
 
-### Progress  window
+### 进度条窗口, Progress  window
 
-Create window with progress bar.
+创建一个带有[进度条的窗口](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/utils/system/ui/select_menu/select_menu.h).（U1S1, 现在应该算是页面）
 
-创建一个带有进度条的窗口.
+Create [window with progress bar](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/utils/system/ui/select_menu/select_menu.h).
 
-### Include
+#### Include
 
 ```cpp
 #include "{path to}/utils/system/ui/ui.h"
 ```
 
-### Example
+#### Example
 
 ```cpp
 using namespace SYSTEM::UI;
@@ -167,34 +268,59 @@ for (int i = 0; i < 100; i++)
 
 
 
-### Buzz music player
+### 蜂鸣器音乐播放器, Buzz music player
 
-A json buzz music file player refs to *https://github.com/robsoncouto/arduino-songs*
+参考 [arduino-songs](https://github.com/robsoncouto/arduino-songs) 的 **json** 格式蜂鸣器音乐播放器, [json 格式音乐示例](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/rachel/apps/app_music/assets/buzz_music/nokia.json).
 
-参考 *https://github.com/robsoncouto/arduino-songs* 的蜂鸣器音乐播放器
+A **json** buzz music file player refs to [arduino-songs](https://github.com/robsoncouto/arduino-songs), [json music file example](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/rachel/apps/app_music/assets/buzz_music/nokia.json).
 
-### Include
+#### Include
 
 ```cpp
 #include "{path to}/utils/system/audio/audio.h"
 ```
 
-### Example
-
-[json music example](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/rachel/apps/app_music/assets/buzz_music/nokia.json)
+#### Example
 
 ```cpp
 using namespace SYSTEM::AUDIO;
 
-// Play the music json file store in SD card, 播放SD路径上的json音乐文件 
+// 播放SD路径上的json音乐文件, Play the music json file store in SD card 
 BuzzMusicPlayer::playFromSdCard("/buzz_music/nokia.json");
 ```
 
 
 
-### Button
+### 按钮, Button
 
-Button lib refs to *https://github.com/madleech/Button*
+参考 [Button](https://github.com/madleech/Button) 的按键库
 
-参考 *https://github.com/madleech/Button* 的按键库
+Button lib refs to  [Button](https://github.com/madleech/Button)
+
+#### Include
+
+```cpp
+#include "{path to}/utils/system/inputs/inputs.h"
+```
+
+#### Example
+
+```cpp
+using namespace SYSTEM::INPUTS;
+
+auto button_a = Button(GAMEPAD::BTN_A);
+
+while (1)
+{
+    if (button_a.pressed())
+        spdlog::info("button a was pressed");
+   	if (button_a.released())
+        spdlog::info("button a was released");
+    if (button_a.toggled())
+        spdlog::info("button a was toggled");
+    HAL::Delay(20);
+}
+```
+
+
 
