@@ -156,11 +156,10 @@ Mooncake 框架内部集成了 [spdlog](https://github.com/gabime/spdlog) 日志
 
 ![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/hal_uml.jpg)
 
-HAL为**单例**模式，[当SDK初始化时被注入](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L34). 
+HAL为**单例**模式，SDK初始化时会[注入](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L34)一个HAL实例. 
 
-如有不同底层硬件需求, 只需派生新的[HAL](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal.h#L84)对象, 改写虚函数并在初始化时注入即可.
-
-对于 `HAL Rachel` , 按住按键A开机, 会暂停在初始化界面, 可以查看详细HAL初始化log.
+- 对于 `HAL Rachel` , 按住按键A开机, 会暂停在初始化界面, 可以查看详细HAL初始化log.
+- 如果有不同底层硬件需求, 只需派生新的[HAL](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal.h#L84)对象, override 虚函数并在初始化时注入即可.
 
 ### Include
 
