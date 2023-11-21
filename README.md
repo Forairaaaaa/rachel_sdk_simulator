@@ -37,28 +37,52 @@ cmake .. && make
 ```shell
 .
 ├── apps
-│   ├── app_ble_gamepad         BLE 手柄
-│   ├── app_music               音乐播放器
-│   ├── app_nofrendo            NES 模拟器
-│   ├── app_raylib_games        Raylib 游戏
-│   ├── app_screencast          WiFi 投屏
-│   ├── app_settings            设置
-│   ├── app_genshin             __,__!
-│   ├── app_template            App 模板
-│   ├── launcher                启动器
-│   ├── utils                   通用组件库
-│   ├── assets                  公共资源
-│   ├── tools                   App 相关工具(脚本)
-│   └── apps.h                  App 安装回调
+│   ├── app_ble_gamepad               BLE 手柄
+│   ├── app_music                     音乐播放器
+│   ├── app_nofrendo                  NES 模拟器
+│   ├── app_raylib_games              Raylib 游戏
+│   ├── app_screencast                WiFi 投屏
+│   ├── app_settings                  设置
+│   ├── app_genshin                   __,__!
+│   ├── app_template                  App 模板
+│   ├── launcher                      启动器
+│   ├── utils                         通用组件库
+│   ├── assets                        公共资源
+│   ├── tools                         App 相关工具(脚本)
+│   └── apps.h                        App 安装回调
 ├── hal
-│   ├── hal.cpp                 HAL 基类
-│   ├── hal.h                   HAL 基类
-│   ├── hal_rachel              HAL Rachel 派生类
-│   ├── hal_simulator           HAL PC 模拟器派生类
-│   └── lgfx_fx                 lgfx 派生类(拓展图形API)
+│   ├── hal.cpp                       HAL 基类
+│   ├── hal.h                         HAL 基类
+│   ├── hal_rachel                    HAL Rachel 派生类
+│   ├── hal_simulator                 HAL PC 模拟器派生类
+│   └── lgfx_fx                       lgfx 派生类(拓展图形API)
 ├── rachel.cpp
-└── rachel.h                    RachelSDK 入口
+└── rachel.h                          RachelSDK 入口
 ```
+
+
+
+## SD卡目录树
+
+NES 模拟器、音乐播放器等会尝试加载SD卡里指定目录的资源文件
+
+```
+.
+├── buzz_music                        蜂鸣器音乐
+│   ├── harrypotter.json
+│   ├── nokia.json
+│   ...
+├── fonts                             字体
+│   └── font_text_24.vlw
+└── nes_roms                          NES ROM 文件
+    ├── Kirby's Adventure (E).nes
+    ├── Snow Bros (U).nes
+	...
+```
+
+`font_text_24.vlw` 这个字体我用的是 [Zpix](https://github.com/SolidZORO/zpix-pixel-font) , 很嗨好看, 可以替换任何自己喜欢的.
+
+`NES ROM` 直接丢进去就行, 不是很大的应该都能玩.
 
 
 
@@ -127,6 +151,8 @@ Mooncake 框架内部集成了 [spdlog](https://github.com/gabime/spdlog) 日志
 HAL为**单例**模式，[当SDK初始化时被注入](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L34). 
 
 如有不同底层硬件需求, 只需派生新的[HAL](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal.h#L84)对象, 改写虚函数并在初始化时注入即可.
+
+对于 `HAL Rachel` , 按住按键A开机, 会暂停在初始化界面, 可以查看详细HAL初始化log.
 
 HAL is a **singleton**, [injected during SDK's init](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L34). 
 
