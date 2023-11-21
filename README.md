@@ -32,6 +32,36 @@ cmake .. && make
 
 
 
+## SDK目录树
+
+```shell
+.
+├── apps
+│   ├── app_ble_gamepad			BLE 手柄
+│   ├── app_music				音乐播放器
+│   ├── app_nofrendo			NES 模拟器
+│   ├── app_raylib_games		Raylib 游戏
+│   ├── app_screencast			WiFi 投屏
+│   ├── app_settings			设置
+│   ├── app_genshin				__,__!
+│   ├── app_template			App 模板
+│   ├── launcher				启动器
+│   ├── utils					通用组件库
+│   ├── assets					公共资源
+│   ├── tools					App 相关工具(脚本)
+│   └── apps.h					App 安装回调
+├── hal
+│   ├── hal.cpp					HAL 基类
+│   ├── hal.h					HAL 基类
+│   ├── hal_rachel				HAL Rachel 派生类
+│   ├── hal_simulator			HAL PC 模拟器派生类
+│   └── lgfx_fx					lgfx 派生类(拓展图形API)
+├── rachel.cpp
+└── rachel.h					RachelSDK 入口
+```
+
+
+
 ## 创建App, Create an App
 
 ##### 写了个 python 脚本用来简化 App 创建: 
@@ -40,24 +70,24 @@ cmake .. && make
 python3 ./src/rachel/apps/tools/app_generator.py
 ```
 
-​	`$ Rachel app generator > <`
-​	`$ app name:`
+​	$ Rachel app generator > <
+​	$ app name:
 
 ```
 hello_world
 ```
 
-​	`$ file names:`
+​	$ file names:
 
-​	`$ - ../app_hello_world/app_hello_world.cpp`
+​	$ - ../app_hello_world/app_hello_world.cpp
 
-​	`$ - ../app_hello_world/app_hello_world.h`
+​	$ - ../app_hello_world/app_hello_world.h
 
-​	`$ app class name: AppHello_world`
+​	$ app class name: AppHello_world
 
-​	`$ install app hello_world`
+​	$ install app hello_world
 
-​	`$ done`
+​	$ done
 
 ##### App 就创建好了, 重新编译上传:
 
