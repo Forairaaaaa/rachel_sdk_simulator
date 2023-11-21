@@ -376,7 +376,7 @@ while (1)
 {
     if (button_a.pressed())
         spdlog::info("button a was pressed");
-   	if (button_a.released())
+    if (button_a.released())
         spdlog::info("button a was released");
     if (button_a.toggled())
         spdlog::info("button a was toggled");
