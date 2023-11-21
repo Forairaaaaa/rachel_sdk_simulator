@@ -236,7 +236,7 @@ public:
     IMU::ImuData_t& getImuData() { return _imu_data; }
 
     /**
-     * @brief Buzzer beep, 打开蜂鸣器
+     * @brief Buzzer beep, 蜂鸣器开始哔哔
      * 
      * @param frequency 
      * @param duration 
@@ -245,7 +245,7 @@ public:
     virtual void beep(float frequency, uint32_t duration) {}
 
     /**
-     * @brief Stop buzzer beep, 停止蜂鸣器
+     * @brief Stop buzzer beep, 蜂鸣器别叫了 
      * 
      */
     static void BeepStop() { Get()->beepStop(); }
@@ -287,7 +287,7 @@ public:
     virtual void renderFpsPanel();
 
     /**
-     * @brief Pop error message and wait reboot, 弹出蓝屏警告并等待重启 
+     * @brief Pop error message and wait reboot, 优雅地抛个蓝屏  
      * 
      * @param msg 
      */
