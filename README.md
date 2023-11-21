@@ -61,7 +61,7 @@ hello_world
 
 ##### App 就创建好了, 重新编译上传:
 
-
+![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/create_app.jpg)
 
 ##### 新创建的 App 基本模板如下, 详细的生命周期和API可以参考 [Mooncake](https://github.com/Forairaaaaa/mooncake) 项目
 
@@ -239,11 +239,13 @@ auto selected_index = select_menu.waitResult(items);
 spdlog::info("selected: {}", items[selected_index]);
 ```
 
+![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/select_menu.jpg)
+
 
 
 ### 进度条窗口, Progress  window
 
-创建一个带有[进度条的窗口](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/utils/system/ui/select_menu/select_menu.h).（U1S1, 现在应该算是页面）
+创建一个带有[进度条的窗口](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/utils/system/ui/select_menu/select_menu.h).（u1s1, 现在应该算是页面）
 
 Create [window with progress bar](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/utils/system/ui/select_menu/select_menu.h).
 
@@ -265,6 +267,8 @@ for (int i = 0; i < 100; i++)
     HAL::Delay(20);
 }
 ```
+
+![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/progress_window.jpg)
 
 
 
