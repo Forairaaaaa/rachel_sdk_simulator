@@ -206,9 +206,11 @@ Useful utilities (hal api based) are integrated in `rachel/apps/utils/system`
 
 ### 选择菜单, Select menu
 
-创建一个[选择菜单](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/utils/system/ui/select_menu/select_menu.h).
+![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/select_menu.jpg)
 
-Create a [select menu](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/utils/system/ui/select_menu/select_menu.h).
+创建一个选择菜单
+
+Create a select menu.
 
 #### Include
 
@@ -239,15 +241,15 @@ auto selected_index = select_menu.waitResult(items);
 spdlog::info("selected: {}", items[selected_index]);
 ```
 
-![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/select_menu.jpg)
-
 
 
 ### 进度条窗口, Progress  window
 
-创建一个带有[进度条的窗口](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/utils/system/ui/select_menu/select_menu.h).（u1s1, 现在应该算是页面）
+![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/progress_window.jpg)
 
-Create [window with progress bar](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/utils/system/ui/select_menu/select_menu.h).
+创建一个带有进度条的窗口（u1s1, 现在应该算是页面）
+
+Create window with progress bar.
 
 #### Include
 
@@ -267,8 +269,6 @@ for (int i = 0; i < 100; i++)
     HAL::Delay(20);
 }
 ```
-
-![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/progress_window.jpg)
 
 
 
