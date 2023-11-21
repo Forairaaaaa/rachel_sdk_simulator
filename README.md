@@ -88,6 +88,12 @@ NES 模拟器、音乐播放器等会尝试加载SD卡里指定目录的资源�
 
 
 
+## SDK结构
+
+![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/sdk_layers.jpg)
+
+
+
 
 
 ## 创建App
