@@ -40,24 +40,24 @@ cmake .. && make
 python3 ./src/rachel/apps/tools/app_generator.py
 ```
 
-​	$ Rachel app generator > <
-​	$ app name:
+​	`$ Rachel app generator > <`
+​	`$ app name:`
 
 ```
 hello_world
 ```
 
-​	$ file names:
+​	`$ file names:`
 
-​	$ - ../app_hello_world/app_hello_world.cpp
+​	`$ - ../app_hello_world/app_hello_world.cpp`
 
-​	$ - ../app_hello_world/app_hello_world.h
+​	`$ - ../app_hello_world/app_hello_world.h`
 
-​	$ app class name: AppHello_world
+​	`$ app class name: AppHello_world`
 
-​	$ install app hello_world
+​	`$ install app hello_world`
 
-​	$ done
+​	`$ done`
 
 ##### App 就创建好了, 重新编译上传:
 
