@@ -32,6 +32,8 @@ cmake .. && make
 
 
 
+
+
 ## SDK目录树
 
 ```shell
@@ -86,7 +88,9 @@ NES 模拟器、音乐播放器等会尝试加载SD卡里指定目录的资源�
 
 
 
-## 创建App, Create an App
+
+
+## 创建App
 
 ##### 写了个 python 脚本用来简化 App 创建: 
 
@@ -146,7 +150,11 @@ Mooncake 框架内部集成了 [spdlog](https://github.com/gabime/spdlog) 日志
 
 
 
-## 硬件抽象层API, HAL API
+
+
+## HAL硬件抽象层
+
+![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/hal_uml.jpg)
 
 HAL为**单例**模式，[当SDK初始化时被注入](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L34). 
 
@@ -154,91 +162,89 @@ HAL为**单例**模式，[当SDK初始化时被注入](https://github.com/Forair
 
 对于 `HAL Rachel` , 按住按键A开机, 会暂停在初始化界面, 可以查看详细HAL初始化log.
 
-HAL is a **singleton**, [injected during SDK's init](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L34). 
-
 ### Include
 
 ```cpp
 #include "{path to}/hal/hal.h"
 ```
 
-### 显示API, Display API
+### 显示API
 
 ```cpp
-// 获取屏幕驱动实例, Get display device
+// 获取屏幕驱动实例
 HAL::GetDisplay();
 
-// 获取全屏Buffer实例, Get full screen canvas (sprite)
+// 获取全屏Buffer实例
 HAL::GetCanvas();
 
-// 推送全屏buffer到显示屏, Push framebuffer
+// 推送全屏buffer到显示屏
 HAL::CanvasUpdate();
 
-// 渲染FPS面板, Render fps panel
+// 渲染FPS面板
 HA::RenderFpsPanel();
 ```
 
 显示驱动使用 [LovyanGFX](https://github.com/lovyan03/LovyanGFX), 详细的图形API可以参考原项目[示例](https://github.com/lovyan03/LovyanGFX/tree/master/examples/HowToUse)
 
-### 系统API, System API
+### 系统API
 
 ```cpp
-// 延时(毫秒), Delay(ms)
+// 延时(毫秒)
 HAL::Delay(unsigned long milliseconds);
 
-// 获取系统运行毫秒数, Get the number of milliseconds passed since boot 
+// 获取系统运行毫秒数
 HAL::Millis();
 
-// 关机, Power off
+// 关机
 HAL::PowerOff();
 
-// 重启, Reboot
+// 重启
 HAL::Reboot();
 
-// 获取当前时间, Get local time(wrap of localtime())
+// 获取当前时间
 HAL::SetSystemTime(tm dateTime);
 
-// 获取当前时间, Get local time(wrap of localtime())
+// 获取当前时间
 HAL::GetLocalTime();
 
-// 优雅地抛个蓝屏, Pop error message and wait reboot
+// 优雅地抛个蓝屏
 HAL::PopFatalError(std::string msg);
 ```
 
 HAL_Rachel 在初始化时会以RTC时间[调整系统时间](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal_rachel/components/hal_rtc.cpp#L70), 所以关于时间的POSIX标准API都可以正常使用
 
-### 外设API, Peripheral API
+### 外设API
 
 ```cpp
-// 刷新IMU数据, Update IMU data
+// 刷新IMU数据
 HAL::UpdateImuData();
 
-// 获取IMU数据, Get the Imu Data
+// 获取IMU数据
 HAL::GetImuData();
 
-// 蜂鸣器开始哔哔, Buzzer beep
+// 蜂鸣器开始哔哔
 HAL::Beep(float frequency, uint32_t duration);
 
-// 蜂鸣器别叫了, Stop buzzer beep
+// 蜂鸣器别叫了
 HAL::BeepStop();
 
-// 检查SD卡是否可用, Check if sd card is valid
+// 检查SD卡是否可用
 HAL::CheckSdCard();
 
-// 获取按键状态, Get button state 
+// 获取按键状态
 HAL::GetButton(GAMEPAD::GamePadButton_t button);
 
-// 获取任意按键状态, Get any button state
+// 获取任意按键状态
 HAL::GetAnyButton();
 ```
 
-### 系统配置API, System config API
+### 系统配置API
 
 ```cpp
-// 从内部FS导入系统配置, Load system config from FS 
+// 从内部FS导入系统配置
 HAL::LoadSystemConfig();
 
-// 保存系统配置到内部FS, Save system config to FS 
+// 保存系统配置到内部FS
 HAL::SaveSystemConfig();
 
 // 获取系统配置, Get the System Config 
@@ -253,21 +259,17 @@ HAL::UpdateSystemFromConfig();
 
 
 
-## 通用组件库, System utils
+
+
+## 通用组件库
 
 一些比较有用的通用封装库放在了这里  `rachel/apps/utils/system`
 
-Useful utilities (hal api based) are integrated in `rachel/apps/utils/system`
-
-
-
-### 选择菜单, Select menu
+### 选择菜单
 
 ![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/select_menu.jpg)
 
 创建一个选择菜单
-
-Create a select menu.
 
 #### Include
 
@@ -280,10 +282,10 @@ Create a select menu.
 ```cpp
 using namespace SYSTEM::UI;
 
-// 创建选择菜单, Create a select menu 
+// 创建选择菜单
 auto select_menu = SelectMenu();
 
-// 创建选项列表, Create item list 
+// 创建选项列表
 std::vector<std::string> items = {
     "[WHAT 7 TO PLAY]",
     "Jenshin Import",
@@ -293,20 +295,18 @@ std::vector<std::string> items = {
     "Quit"
 };
 
-// 等待选择, Wait select result  
+// 等待选择
 auto selected_index = select_menu.waitResult(items);
 spdlog::info("selected: {}", items[selected_index]);
 ```
 
 
 
-### 进度条窗口, Progress  window
+### 进度条窗口
 
 ![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/progress_window.jpg)
 
 创建一个带有进度条的窗口（u1s1, 现在应该算是页面）
-
-Create window with progress bar.
 
 #### Include
 
@@ -329,11 +329,9 @@ for (int i = 0; i < 100; i++)
 
 
 
-### 蜂鸣器音乐播放器, Buzz music player
+### 蜂鸣器音乐播放器
 
 参考 [arduino-songs](https://github.com/robsoncouto/arduino-songs) 的 **json** 格式蜂鸣器音乐播放器, [json 格式音乐示例](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/rachel/apps/app_music/assets/buzz_music/nokia.json).
-
-A **json** buzz music file player refs to [arduino-songs](https://github.com/robsoncouto/arduino-songs), [json music file example](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/rachel/apps/app_music/assets/buzz_music/nokia.json).
 
 #### Include
 
@@ -346,17 +344,15 @@ A **json** buzz music file player refs to [arduino-songs](https://github.com/rob
 ```cpp
 using namespace SYSTEM::AUDIO;
 
-// 播放SD路径上的json音乐文件, Play the music json file store in SD card 
+// 播放SD路径上的json音乐文件
 BuzzMusicPlayer::playFromSdCard("/buzz_music/nokia.json");
 ```
 
 
 
-### 按钮, Button
+### 按钮
 
 参考 [Button](https://github.com/madleech/Button) 的按键库
-
-Button lib refs to  [Button](https://github.com/madleech/Button)
 
 #### Include
 
