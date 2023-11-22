@@ -32,9 +32,13 @@ cmake .. && make
 
 
 
+## 编译
+
+`RachelSDK` 为 `PIO` 工程, `VS Code` 下载 `PlatformIO` 插件, 用 `VS Code` 打开文件夹即可.
 
 
-## SDK目录树
+
+## SDK 目录树
 
 ```shell
 .
@@ -64,7 +68,7 @@ cmake .. && make
 
 
 
-## SD卡目录树
+## SD 卡目录树
 
 NES 模拟器、音乐播放器等会尝试加载SD卡里指定目录的资源文件
 
@@ -88,7 +92,7 @@ NES 模拟器、音乐播放器等会尝试加载SD卡里指定目录的资源�
 
 
 
-## SDK结构
+## SDK 结构
 
 ![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/sdk_layers.jpg)
 
@@ -96,7 +100,7 @@ NES 模拟器、音乐播放器等会尝试加载SD卡里指定目录的资源�
 
 
 
-## 创建App
+## 创建 App
 
 ##### 写了个 `python` 脚本用来简化 App 创建: 
 
@@ -162,7 +166,7 @@ void AppTemplate::onRunning()
 - 添加 `mooncake->installApp(new MOONCAKE::APPS::AppHello_world_Packer);`
 - 编译上传
 
-### 常用的 App API
+### 常用的  App  API
 
 ##### destroyApp()
 
@@ -171,8 +175,8 @@ void AppTemplate::onRunning()
 ```cpp
 // 有效
 void AppTemplate::onRunning()
-{    
-	destroyApp();
+{
+    destroyApp();
 }
 
 // 无效
@@ -206,7 +210,7 @@ class AppHello_world_Packer : public APP_PACKER_BASE
 class AppHello_world_Packer : public APP_PACKER_BASE
 {
     ...
-    // 这里修改你的 App 图标(默认返回默认图标)
+    // 这里修改你的 App 图标(有默认图标)
     void* getAppIcon() override { return (void*)image_data_icon_app_default; }
     ...
 }
@@ -214,7 +218,7 @@ class AppHello_world_Packer : public APP_PACKER_BASE
 
 ##### mcAppGetDatabase()
 
-获取数据库实例, 是一个简单的`RAM`上 `KV` 数据库, 可以用于 App 退出数据保存(当然断电没), 多 App 间的数据共享, 详细用法参考[这里](https://github.com/Forairaaaaa/mooncake/blob/main/example/framework/simplekv_test.cpp).
+获取数据库实例, 是一个简单的 `RAM` 上 `KV` 数据库, 可以用于 App 退出数据保存(当然断电没), 多 App 间的数据共享, 详细用法参考[这里](https://github.com/Forairaaaaa/mooncake/blob/main/example/framework/simplekv_test.cpp).
 
 ```cpp
 void AppTemplate::onResume()
@@ -254,7 +258,7 @@ for (const auto& app_packer : mcAppGetFramework()->getAppRegister().getInstalled
 
 
 
-## HAL硬抽象层
+## HAL 硬件抽象层
 
 ![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/hal_uml.jpg)
 
@@ -269,7 +273,7 @@ HAL为**单例**模式，SDK初始化时会[注入](https://github.com/Forairaaa
 #include "{path to}/hal/hal.h"
 ```
 
-### 显示API
+### 显示 API
 
 ```cpp
 // 获取屏幕驱动实例
@@ -287,7 +291,7 @@ HA::RenderFpsPanel();
 
 显示驱动使用 [LovyanGFX](https://github.com/lovyan03/LovyanGFX), 详细的图形API可以参考原项目[示例](https://github.com/lovyan03/LovyanGFX/tree/master/examples/HowToUse)
 
-### 系统API
+### 系统 API
 
 ```cpp
 // 延时(毫秒)
@@ -314,7 +318,7 @@ HAL::PopFatalError(std::string msg);
 
 `HAL Rachel` 在初始化时会以RTC时间[调整系统时间](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal_rachel/components/hal_rtc.cpp#L70), 所以时间相关的`POSIX标准`API都可以正常使用
 
-### 外设API
+### 外设 API
 
 ```cpp
 // 刷新IMU数据
@@ -339,7 +343,7 @@ HAL::GetButton(GAMEPAD::GamePadButton_t button);
 HAL::GetAnyButton();
 ```
 
-### 系统配置API
+### 系统配置 API
 
 ```cpp
 // 从内部FS导入系统配置
