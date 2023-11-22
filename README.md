@@ -98,7 +98,7 @@ NES 模拟器、音乐播放器等会尝试加载SD卡里指定目录的资源�
 
 ## 创建App
 
-##### 写了个 python 脚本用来简化 App 创建: 
+##### 写了个 `python` 脚本用来简化 App 创建: 
 
 ```shell
 python3 ./src/rachel/apps/tools/app_generator.py
@@ -152,7 +152,17 @@ void AppTemplate::onRunning()
 }
 ```
 
-Mooncake 框架内部集成了 [spdlog](https://github.com/gabime/spdlog) 日志库, 当然你也可以继续用 std::cout, printf, Serial...
+`Mooncake` 框架内部集成了 [spdlog](https://github.com/gabime/spdlog) 日志库, 当然你也可以继续用 `cout`, `printf`, `Serial`...
+
+##### 手动创建
+
+- 复制 `src/rachel/apps/app_template` 到同一目录并重命名: `src/rachel/apps/app_hello_world`
+- 将里面的 `app_template.cpp` 和 `app_template.h` 重命名为 `app_hello_world.cpp` 和 `app_hello_world.h` 
+- 打开  `app_hello_world.cpp` 和 `app_hello_world.h` , 将里面的所有 `AppTemplate` 替换成 `AppHello_world`
+- 打开 `src/rachel/apps/apps.h`
+- 添加 `#include "app_hello_world/app_hello_world.h"` 
+- 添加 `mooncake->installApp(new MOONCAKE::APPS::AppHello_world_Packer);`
+- 编译上传
 
 
 
@@ -164,8 +174,8 @@ Mooncake 框架内部集成了 [spdlog](https://github.com/gabime/spdlog) 日志
 
 HAL为**单例**模式，SDK初始化时会[注入](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L34)一个HAL实例. 
 
-- 对于 `HAL Rachel` , 按住按键A开机, 会暂停在初始化界面, 可以查看详细HAL初始化log.
-- 如果有不同底层硬件需求, 只需派生新的[HAL](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal.h#L84)对象, override 虚函数并在初始化时注入即可.
+- 对于 `HAL Rachel` , 按住`按键A`开机, 会暂停在初始化界面, 可以查看详细的HAL初始化log.
+- 如果有不同底层硬件需求, 只需派生新的[HAL](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal.h#L84)对象, override 并在初始化时注入即可.
 
 ### Include
 
@@ -216,7 +226,7 @@ HAL::GetLocalTime();
 HAL::PopFatalError(std::string msg);
 ```
 
-HAL_Rachel 在初始化时会以RTC时间[调整系统时间](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal_rachel/components/hal_rtc.cpp#L70), 所以关于时间的POSIX标准API都可以正常使用
+`HAL Rachel` 在初始化时会以RTC时间[调整系统时间](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal_rachel/components/hal_rtc.cpp#L70), 所以时间相关的`POSIX`标准API都可以正常使用
 
 ### 外设API
 
@@ -274,7 +284,7 @@ HAL::UpdateSystemFromConfig();
 
 ![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/select_menu.jpg)
 
-创建一个选择菜单
+创建一个`选择菜单`
 
 #### Include
 
@@ -311,7 +321,7 @@ spdlog::info("selected: {}", items[selected_index]);
 
 ![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/progress_window.jpg)
 
-创建一个带有进度条的窗口（u1s1, 现在应该算是页面）
+创建一个`带有进度条的窗口`（u1s1, 现在应该算是页面）
 
 #### Include
 
@@ -336,7 +346,7 @@ for (int i = 0; i < 100; i++)
 
 ### 蜂鸣器音乐播放器
 
-参考 [arduino-songs](https://github.com/robsoncouto/arduino-songs) 的 **json** 格式蜂鸣器音乐播放器, [json 格式音乐示例](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/rachel/apps/app_music/assets/buzz_music/nokia.json).
+参考 [arduino-songs](https://github.com/robsoncouto/arduino-songs) 的 `json 格式蜂鸣器音乐播放器`, [json 格式音乐示例](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/rachel/apps/app_music/assets/buzz_music/nokia.json).
 
 #### Include
 
@@ -357,7 +367,7 @@ BuzzMusicPlayer::playFromSdCard("/buzz_music/nokia.json");
 
 ### 按钮
 
-参考 [Button](https://github.com/madleech/Button) 的按键库
+参考 [Button](https://github.com/madleech/Button) 的`按键库`
 
 #### Include
 
