@@ -134,9 +134,7 @@ hello_world
 // Like setup()...
 void AppTemplate::onResume()
 {
-    spdlog::info("{} onResume", getAppName());
-
-    _quit_count = 0;
+    spdlog::info("{} 启动", getAppName());
 }
 
 
@@ -146,8 +144,8 @@ void AppTemplate::onRunning()
     spdlog::info("咩啊");
     HAL::Delay(1000);
 
-    _quit_count++;
-    if (_quit_count > 5)
+    _data.count++;
+    if (_data.count > 5)
         destroyApp();
 }
 ```
@@ -164,18 +162,106 @@ void AppTemplate::onRunning()
 - 添加 `mooncake->installApp(new MOONCAKE::APPS::AppHello_world_Packer);`
 - 编译上传
 
+### 常用的 App API
+
+##### destroyApp()
+
+关闭 App, 调用后会告诉框架你不玩了, 由框架将你的 App 销毁释放, 所以在 `onRunning()` 被阻塞的情况下是无效的.
+
+```cpp
+// 有效
+void AppTemplate::onRunning()
+{    
+	destroyApp();
+}
+
+// 无效
+void AppTemplate::onRunning()
+{    
+    destroyApp();
+    HAL::Delay(66666666666);
+}
+```
+
+##### getAppName()
+
+获取 App 名字, 会返回你设置的 App 名字.
+
+```cpp
+// 你的 App 头文件里:
+class AppHello_world_Packer : public APP_PACKER_BASE
+{
+    // 这里修改你的 App 名字:
+    std::string getAppName() override { return "文明讲礼外乡人"; }
+    ...
+}
+```
+
+##### getAppIcon()
+
+获取 App 图标, 启动器在渲染画面时会调用.
+
+```cpp
+// 你的 App 头文件里:
+class AppHello_world_Packer : public APP_PACKER_BASE
+{
+    ...
+    // 这里修改你的 App 图标(默认返回默认图标)
+    void* getAppIcon() override { return (void*)image_data_icon_app_default; }
+    ...
+}
+```
+
+##### mcAppGetDatabase()
+
+获取数据库实例, 是一个简单的`RAM`上 `KV` 数据库, 可以用于 App 退出数据保存(当然断电没), 多 App 间的数据共享, 详细用法参考[这里](https://github.com/Forairaaaaa/mooncake/blob/main/example/framework/simplekv_test.cpp).
+
+```cpp
+void AppTemplate::onResume()
+{
+    // 看看数据库里有没有这个 key
+    if (mcAppGetDatabase()->Exist("开了?"))
+    {
+        // 数据库里拿出来, 看看开了几次
+        int how_many = mcAppGetDatabase()->Get("开了?")->value<int>();
+        spdlog::info("开了 {} 次", how_many);
+		
+        // 加上这一次, 写进数据库
+        how_many++;
+        mcAppGetDatabase()->Put<int>("开了?", how_many);
+    }
+    // 没有就创建一个
+    else
+        mcAppGetDatabase()->Add<int>("开了?", 1);
+}
+```
+
+##### mcAppGetFramework()
+
+获取 `Mooncake` 框架实例, 一般用来写启动器.. 比如[这里](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/launcher/view/menu.cpp#L57).
+
+```cpp
+// 看看安装了几个 App
+auto installed_app_num = mcAppGetFramework()->getAppRegister().getInstalledAppNum();
+spdlog::info("安装了 {} 个 App", installed_app_num);
+
+// 看看他们都叫什么
+for (const auto& app_packer : mcAppGetFramework()->getAppRegister().getInstalledAppList())
+{
+    spdlog::info("{}", app_packer->getAppName());
+}
+```
 
 
 
-
-## HAL硬件抽象层
+## HAL硬抽象层
 
 ![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/hal_uml.jpg)
 
 HAL为**单例**模式，SDK初始化时会[注入](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L34)一个HAL实例. 
 
-- 对于 `HAL Rachel` , 按住`按键A`开机, 会暂停在初始化界面, 可以查看详细的HAL初始化log.
-- 如果有不同底层硬件需求, 只需派生新的[HAL](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal.h#L84)对象, override 并在初始化时注入即可.
+- 对于 `HAL Rachel` , 按住 `按键A` 开机, 会暂停在初始化界面, 可以查看详细的HAL初始化log.
+- 如果有不同底层硬件需求, 只需派生新的[HAL](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal.h#L84)对象, `override` 并在初始化时注入即可.
 
 ### Include
 
@@ -226,7 +312,7 @@ HAL::GetLocalTime();
 HAL::PopFatalError(std::string msg);
 ```
 
-`HAL Rachel` 在初始化时会以RTC时间[调整系统时间](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal_rachel/components/hal_rtc.cpp#L70), 所以时间相关的`POSIX`标准API都可以正常使用
+`HAL Rachel` 在初始化时会以RTC时间[调整系统时间](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal_rachel/components/hal_rtc.cpp#L70), 所以时间相关的`POSIX标准`API都可以正常使用
 
 ### 外设API
 
@@ -284,7 +370,7 @@ HAL::UpdateSystemFromConfig();
 
 ![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/select_menu.jpg)
 
-创建一个`选择菜单`
+创建一个选择菜单
 
 #### Include
 
@@ -321,7 +407,7 @@ spdlog::info("selected: {}", items[selected_index]);
 
 ![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/progress_window.jpg)
 
-创建一个`带有进度条的窗口`（u1s1, 现在应该算是页面）
+创建一个带有进度条的窗口（u1s1, 现在应该算是页面）
 
 #### Include
 
@@ -346,7 +432,7 @@ for (int i = 0; i < 100; i++)
 
 ### 蜂鸣器音乐播放器
 
-参考 [arduino-songs](https://github.com/robsoncouto/arduino-songs) 的 `json 格式蜂鸣器音乐播放器`, [json 格式音乐示例](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/rachel/apps/app_music/assets/buzz_music/nokia.json).
+参考 [arduino-songs](https://github.com/robsoncouto/arduino-songs) 的 json 格式蜂鸣器音乐播放器, [json 格式音乐示例](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/rachel/apps/app_music/assets/buzz_music/nokia.json).
 
 #### Include
 
@@ -367,7 +453,7 @@ BuzzMusicPlayer::playFromSdCard("/buzz_music/nokia.json");
 
 ### 按钮
 
-参考 [Button](https://github.com/madleech/Button) 的`按键库`
+参考 [Button](https://github.com/madleech/Button) 的按键库
 
 #### Include
 

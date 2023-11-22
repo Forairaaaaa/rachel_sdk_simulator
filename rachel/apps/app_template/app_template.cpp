@@ -17,15 +17,10 @@
 using namespace MOONCAKE::APPS;
 
 
-static int _quit_count = 0;
-
-
 // Like setup()...
 void AppTemplate::onResume()
 {
     spdlog::info("{} onResume", getAppName());
-
-    _quit_count = 0;
 }
 
 
@@ -35,8 +30,8 @@ void AppTemplate::onRunning()
     spdlog::info("咩啊");
     HAL::Delay(1000);
 
-    _quit_count++;
-    if (_quit_count > 5)
+    _data.count++;
+    if (_data.count > 5)
         destroyApp();
 }
 
