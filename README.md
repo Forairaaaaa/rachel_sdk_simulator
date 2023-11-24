@@ -687,7 +687,7 @@ void Launcher::onRunningBG()
 
 ## SmoothMenu
 
-讲启动器的渲染之前要先插播一下 `SmoothMenu` 这个带简单路径插值的菜单抽象
+讲启动器的渲染之前要先插播一下 `SmoothMenu` 这个带简单路径插值的菜单抽象库
 
 ### 菜单
 
@@ -707,9 +707,9 @@ void Launcher::onRunningBG()
 
 ### 插值
 
-因为👉运动和数学大题一样要有过程，所以👉从 `item_1(x1, y1)` 到 `item_2(x2, y2)` 的过程要给上插值
+因为👉运动和数学大题一样要有过程，所以👉从 `item_1(x1, y1)` 到 `item_2(x2, y2)` 要给上过程插值
 
-我这里的插值实现是对 [Lvgl_anim](https://github.com/lvgl/lvgl/blob/v8.3.10/src/misc/lv_anim.h) 的封装（读书人的事怎么能叫抄呢（恼））：
+我这里的插值实现是对 [lvgl_anim](https://github.com/lvgl/lvgl/blob/v8.3.10/src/misc/lv_anim.h) 的封装（读书人的事怎么能叫抄呢（恼））：
 
 ```cpp
 // 参数: 动画曲线(贝塞尔), 开始值, 结束值, 过程时间
@@ -719,7 +719,7 @@ void setAnim(LV_ANIM_PATH_t path, int32_t startValue, int32_t endValue, int32_t 
 int32_t getValue(int32_t currentTime);
 ```
 
-看完这两个 API 应该都明啦
+看完上面这两个 API 应该都明啦，只需要这样：
 
 ```cpp
 anim_x.setAnim(Q弹, x1, x2, 1秒);
@@ -732,13 +732,58 @@ while (1)
 }
 ```
 
-这样👉就Q弹地从 `item_1` 运动到 `item_2` 了~
+👉就可以Q弹地从 `item_1` 运动到 `item_2` 了~
 
-然后再发散一点，能不能给所有坐标都套上插值捏：菜单打开关闭动画.. 长菜单滚动动画..
+然后再发散一点，能不能给所有坐标都套上插值捏，就有了菜单打开关闭动画.. 长菜单滚动动画..
 
 ### 渲染
 
-到这里我们抽象出来了一坨飞来飞去的坐标，渲染就变得很轻松啦（
+到这里我们已经抽象出来了一坨飞来飞去的坐标，直接把这坨坐标甩给用户就行了，渲染回调函数：
 
+```cpp
+virtual void renderCallback(
+    const std::vector<Item_t*>& menuItemList,        // 菜单
+    const RenderAttribute_t& selector,               // 👉
+    const RenderAttribute_t& camera                  // 摄像机
+) {}
+```
 
+依次在坐标上渲染相应的目标，一个（帧）菜单页面就完成了
+
+## App Launcher 渲染
+
+这下再回来看启动器的渲染就很清晰啦
+
+首先是菜单的创建：
+
+```cpp
+...
+  
+// 看看安装了什么
+for (const auto& app : mcAppGetFramework()->getAppRegister().getInstalledAppList())
+{
+    // 跳过自己
+    if (app->getAddr() == getAppPacker())
+        continue;
+
+    // 把 App 塞进菜单里
+    _data.menu->getMenu()->addItem(
+        // App 的名字
+        app->getAppName(),
+        // App 的 X 坐标
+        THEME_APP_ICON_GAP + i * (THEME_APP_ICON_WIDTH + THEME_APP_ICON_GAP),
+        // App 的 Y 坐标 (这里 Y 为恒定是因为我菜单是横着走的)
+        THEME_APP_ICON_MARGIN_TOP,
+        // 这东西有多宽 (图标宽)
+        THEME_APP_ICON_WIDTH,
+        // 这东西有多高 (图标高)
+        THEME_APP_ICON_HEIGHT,
+        // 把图标的的指针也塞进去
+        app->getAppIcon()
+    );
+    i++;
+}
+
+...
+```
 
