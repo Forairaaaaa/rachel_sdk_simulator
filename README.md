@@ -581,7 +581,7 @@ _mooncake->createApp(launcher);
 
 ## App Launcher
 
-启动器，由 SDK 启动的第一个 App，用来启动别的 App（？）
+启动器，由 SDK 启动的第一个 App，用来启动 App 的 App（？）
 
 #### 目录树
 
@@ -597,7 +597,7 @@ _mooncake->createApp(launcher);
     └── menu_render_callback.hpp      启动器菜单渲染回调
 ```
 
-打开 [launcher.cpp](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/launcher/launcher.cpp)，从各个生命周期看起：
+打开 [launcher.cpp](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/launcher/launcher.cpp)：
 
 `onCreate` ，这个地方只会在启动器被[创建](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L49)时调用一次，所以负责自己属性的配置和资源申请等：
 
@@ -630,4 +630,115 @@ void Launcher::onResume()
     _update_clock(true);
 }
 ```
+
+`onRunning` ，没有其他 App 打开时，启动器读取输入..刷新菜单、控件.. 渲染画面..
+
+```cpp
+void Launcher::onRunning()
+{
+    _update_clock();
+    _update_menu();
+}
+```
+
+偷偷点进去 `_update_menu()` 然后看看[这里](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/launcher/view/menu.cpp#L121)，可以看到当启动器需要打开一个 App 的时候干了什么：
+
+```cpp
+...
+
+// 看看开了哪一个
+auto selected_item = _data.menu->getSelector()->getTargetItem();
+
+// Skip launcher 
+selected_item++;
+// 获取选中的 App 的 App Packer
+auto app_packer = mcAppGetFramework()->getInstalledAppList()[selected_item];
+
+// 用他来创建和打开这个 App, 
+if (mcAppGetFramework()->createAndStartApp(app_packer))
+{
+    ...
+    // 将启动器压进后台
+    closeApp();
+}
+
+...
+```
+
+倒回来看 `onRunningBG` ，启动器在后台时居然在..
+
+```cpp
+void Launcher::onRunningBG()
+{
+    // 如果只剩下启动器一个 App 在运行(也就是说之前打开的 App 已经退出销毁了)
+    if (mcAppGetFramework()->getAppManager().getCreatedAppNum() == 1)
+    {
+        ...
+            
+        // 将启动器推回前台
+        mcAppGetFramework()->startApp(this);
+        
+        ...
+    }
+}
+```
+
+这里的判断方式其实会伴随一些限制，比如我不能在启动器在前台的同时，有其他 App 在后台搞事。因为启动器回到前台的条件就是只有他一个 App （好霸道），不过暂时也没这需求~
+
+## SmoothMenu
+
+讲启动器的渲染之前要先插播一下 `SmoothMenu` 这个带简单路径插值的菜单抽象
+
+### 菜单
+
+这里只是个简单的菜单，所以可以分为三部分：
+
+- 菜单（Menu）：就是菜单，存着有什么菜可以点
+- 选择器（Selector）：你的手指，用来👉菜
+- 摄像机（Camera）：你的眼睛，用来盯着你的手指
+
+然后发散一点，将菜单里的每一道菜（Item），想象成坐标轴上的一个点 `item(x, y)`，那菜单就变成了一系列点的集合： `[item_1, item_2, item_3...]`
+
+然后你的手指👉的地方也是一点 `selector(x, y)` ，当你想吃第二道菜的时候，就可以指向 `selector(item_2)` ，告诉别人你对这道菜有意思（就意思意思）
+
+到这里已经可以用了：`按键 DOWN` 按下的时候，👉从 `selector(item_1)` 跳到  `selector(item_2)` ，搞定
+
+那摄像机用来干嘛捏，屏幕和眼睛一样有范围限制，所以菜单特别长的时候，眼睛要跟着👉走
+
+### 插值
+
+因为👉运动和数学大题一样要有过程，所以👉从 `item_1(x1, y1)` 到 `item_2(x2, y2)` 的过程要给上插值
+
+我这里的插值实现是对 [Lvgl_anim](https://github.com/lvgl/lvgl/blob/v8.3.10/src/misc/lv_anim.h) 的封装（读书人的事怎么能叫抄呢（恼））：
+
+```cpp
+// 参数: 动画曲线(贝塞尔), 开始值, 结束值, 过程时间
+void setAnim(LV_ANIM_PATH_t path, int32_t startValue, int32_t endValue, int32_t time);
+
+// 根据时间返回当前值
+int32_t getValue(int32_t currentTime);
+```
+
+看完这两个 API 应该都明啦
+
+```cpp
+anim_x.setAnim(Q弹, x1, x2, 1秒);
+anim_y.setAnim(Q弹, y1, y2, 1秒);
+
+while (1)
+{
+    current_time = 宜家几点;
+    selector(anim_x.getValue(current_time), anim_y.getValue(current_time));
+}
+```
+
+这样👉就Q弹地从 `item_1` 运动到 `item_2` 了~
+
+然后再发散一点，能不能给所有坐标都套上插值捏：菜单打开关闭动画.. 长菜单滚动动画..
+
+### 渲染
+
+到这里我们抽象出来了一坨飞来飞去的坐标，渲染就变得很轻松啦（
+
+
 
