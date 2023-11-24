@@ -575,7 +575,9 @@ _mooncake->createApp(launcher);
 ...
 ```
 
-初始化完后, 由 [Mooncake](https://github.com/Forairaaaaa/mooncake) 框架接管，完成各个 App 的各个生命周期的调度
+初始化完后, 由 [Mooncake](https://github.com/Forairaaaaa/mooncake) 框架接管，完成各个 App 的各个生命周期的调度，放个生命周期简图：
+
+![](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/pics/mooncake_lifecycle.png)
 
 ## App Launcher
 
