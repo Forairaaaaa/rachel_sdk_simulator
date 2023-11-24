@@ -691,7 +691,7 @@ void Launcher::onRunningBG()
 
 ### 菜单
 
-这里只是个简单的菜单，所以可以分为三部分：
+这只是个简单的菜单，所以可以分为三部分：
 
 - 菜单（Menu）：就是菜单，存着有什么菜可以点
 - 选择器（Selector）：你的手指，用来👉菜
@@ -703,7 +703,7 @@ void Launcher::onRunningBG()
 
 到这里已经可以用了：`按键 DOWN` 按下的时候，👉从 `selector(item_1)` 跳到  `selector(item_2)` ，搞定
 
-那摄像机用来干嘛捏，屏幕和眼睛一样有范围限制，所以菜单特别长的时候，眼睛要跟着👉走
+那摄像机用来干嘛捏，屏幕和眼睛一样有范围限制，所以菜单特别长的时候，眼睛要跟着👉动
 
 ### 插值
 
@@ -782,6 +782,36 @@ for (const auto& app : mcAppGetFramework()->getAppRegister().getInstalledAppList
         app->getAppIcon()
     );
     i++;
+}
+
+...
+```
+
+然后看对应的[渲染回调](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/launcher/view/menu_render_callback.hpp)：
+
+```cpp
+...
+
+// 首先引入了 X 偏移量, 是因为我只需要按下按键后图标们滚动, 相当于👉不动菜单动
+// 所以把坐标系原点从菜单转换到👉就行
+_x_offset = -(selector.x) + HAL::GetCanvas()->width() / 2 - THEME_APP_ICON_WIDTH_HALF;
+
+// 遍历菜单里所有的东西
+for (const auto& item : menuItemList)
+{
+    // 这里引入了 Y 偏移量, 是为了实现被选中的 App 图标比没选中的高, 就跟斗地主一样~
+    _y_offset = std::abs(selector.x - item->x) / 3;
+
+    // 最后根据坐标渲染 App 图标就大功告成了
+    HAL::GetCanvas()->pushImage(
+        item->x + _x_offset, 
+        item->y + _y_offset,
+        THEME_APP_ICON_WIDTH, 
+        THEME_APP_ICON_HEIGHT, 
+        (const uint16_t*)(item->userData)
+    );
+
+    ...
 }
 
 ...
