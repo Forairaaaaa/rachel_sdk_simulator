@@ -486,7 +486,7 @@ while (1)
 
 # 深入
 
-更深入的具体框架和实现
+更深入些的具体框架和实现，睡不着可以看看
 
 ## HAL Rachel
 
@@ -540,13 +540,13 @@ inline void init() override
 
 ## HAL Simulator
 
-因为 [LovyanGFX](https://github.com/lovyan03/LovyanGFX/tree/master/examples_for_PC/CMake_SDL) 支持 SDL 作显示后端，因此要实现一个 PC 上的 HAL 实现基本什么都不用做(确信)，一个[头文件](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal_simulator/hal_simulator.hpp)搞定。RachelSDK 的模拟器工程在[这里](https://github.com/Forairaaaaa/rachel_sdk_simulator)
+因为 [LovyanGFX](https://github.com/lovyan03/LovyanGFX/tree/master/examples_for_PC/CMake_SDL) 支持 SDL 作显示后端，因此要实现一个 PC 上的 HAL 实现基本什么都不用做（确信），一个[头文件](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/hal/hal_simulator/hal_simulator.hpp)搞定。RachelSDK 的模拟器工程在[这里](https://github.com/Forairaaaaa/rachel_sdk_simulator)
 
-## RachelSDK 程序流程
+## RachelSDK 初始化流程
 
 有 HAL 把底层抽象架空，剩下的都是 C++ 自由发挥了（当然有些 App 还是直接用了平台特定 API, 比如 NES 模拟器用了 ESP32 的分区读写 API, 如果这些都给做上抽象就太浪费时间了~, 条件编译隔开就好, 不妨碍整体框架的通用性）
 
-RachelSDk 的初始化在[这里](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/rachel/rachel.cpp#L26)，具体如下：
+RachelSDK 的初始化在[这里](https://github.com/Forairaaaaa/rachel_sdk_simulator/blob/main/rachel/rachel.cpp#L26)，具体如下：
 
 ```cpp
 ...
@@ -575,5 +575,57 @@ _mooncake->createApp(launcher);
 ...
 ```
 
-初始化完后, 由 Mooncake 框架接管，完成各个 App 的各个生命周期的调度
+初始化完后, 由 [Mooncake](https://github.com/Forairaaaaa/mooncake) 框架接管，完成各个 App 的各个生命周期的调度
+
+## App Launcher
+
+启动器，由 SDK 启动的第一个 App，用来启动别的 App（？）
+
+#### 目录树
+
+```shell
+.
+├── assets                            静态资源
+│   └── launcher_bottom_panel.hpp
+├── launcher.cpp                      App Launcher 实现
+├── launcher.h                        App Launcher 声明
+└── view
+    ├── app_anim.cpp                  App 打开关闭动画
+    ├── menu.cpp                      启动器菜单
+    └── menu_render_callback.hpp      启动器菜单渲染回调
+```
+
+打开 [launcher.cpp](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/apps/launcher/launcher.cpp)，从各个生命周期看起：
+
+`onCreate` ，这个地方只会在启动器被[创建](https://github.com/Forairaaaaa/RachelSDK/blob/main/src/rachel/rachel.cpp#L49)时调用一次，所以负责自己属性的配置和资源申请等：
+
+```cpp
+void Launcher::onCreate()
+{
+    ...
+        
+    // 允许后台运行
+    setAllowBgRunning(true);
+    // 使能在创建后自动启动
+    startApp();
+    
+    // 创建菜单(这个菜单就是安装了的 App 的列表的抽象, 后面渲染部分会详细讲)
+    _create_menu();
+}
+```
+`onResume` 会在启动器刚创建，或者从后台切到前台时被调用，所以放一些渲染前的准备，控件信息刷新..
+
+```cpp
+void Launcher::onResume()
+{
+    ...
+
+    // 切字体..
+    HAL::LoadLauncherFont24();
+    HAL::GetCanvas()->setTextScroll(false);
+    
+    // 更新状态栏的时间文本
+    _update_clock(true);
+}
+```
 
