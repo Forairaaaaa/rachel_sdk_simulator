@@ -113,6 +113,8 @@ namespace ARKANOID
     //------------------------------------------------------------------------------------
     int main(void)
     {
+        _data = new Data_t;
+
         // Initialization (Note windowTitle is unused on Android)
         //---------------------------------------------------------
         InitWindow(screenWidth, screenHeight, "classic game: arkanoid");
@@ -153,6 +155,8 @@ namespace ARKANOID
 
         CloseWindow();        // Close window and OpenGL context
         //--------------------------------------------------------------------------------------
+
+        delete _data;
 
         return 0;
     }
